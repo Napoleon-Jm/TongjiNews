@@ -1,0 +1,153 @@
+package com.tongji.wangjimin.tongjinews.adapter;
+
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.tongji.wangjimin.tongjinews.R;
+import com.tongji.wangjimin.tongjinews.net.News;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by wangjimin on 17/2/24.
+ * ImportNewsAdapter.
+ */
+
+public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_FOOTER = 1;
+
+    private class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView title;
+        private SimpleDraweeView image;
+        private ViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView)itemView.findViewById(R.id.item_title);
+            image = (SimpleDraweeView)itemView.findViewById(R.id.item_image);
+            itemView.setOnClickListener(v -> {
+                if(mListener != null)
+                    mListener.onClick(getAdapterPosition());
+            });
+        }
+    }
+
+    private class FootHolder extends RecyclerView.ViewHolder{
+//        TextView textView;
+        private ProgressBar progressBar;
+        private FootHolder(View itemView) {
+            super(itemView);
+//            textView = (TextView)itemView.findViewById(R.id.importnews_item_footer_text);
+            progressBar = (ProgressBar)itemView.findViewById(R.id.importnews_item_progressbar);
+        }
+    }
+
+    private Context mContext;
+    private List<News> mData;
+    private ClickListener mListener;
+    private boolean mIsLoading;
+
+    public ImportNewsAdapter(Context context){
+        mContext = context;
+        mData = new ArrayList<>();
+        mIsLoading = false;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View root = null;
+        switch (viewType){
+            case TYPE_NORMAL:
+                root = LayoutInflater.from(mContext).inflate(R.layout.importnews_recyclerview_item, parent, false);
+                return new ViewHolder(root);
+            case TYPE_FOOTER:
+                root = LayoutInflater.from(mContext).inflate(R.layout.importnews_recyclerview_item_footer, parent, false);
+                return new FootHolder(root);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        switch (getItemViewType(position)){
+            case TYPE_NORMAL:
+                ViewHolder h = (ViewHolder)holder;
+                h.title.setText(mData.get(position).getTitle());
+                List<String> images = mData.get(position).getImages();
+                if(images == null || images.size() < 1)
+                    return;
+                h.image.setImageURI(images.get(0));
+                break;
+            case TYPE_FOOTER:
+                FootHolder f = (FootHolder)holder;
+//                f.textView.setText("Load more ...");
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        if(mData.size() < 3)
+            return mData.size();
+        return mData.size() + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position == mData.size())
+            return TYPE_FOOTER;
+        return TYPE_NORMAL;
+    }
+
+    public void setDataAndNotify(List<News> data){
+        mData = data;
+        notifyDataSetChanged();
+        Log.d("wjm", data.size() + "");
+    }
+
+    public void addAll(List<News> data){
+        mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    @Nullable
+    public News getNews(int i){
+        if(i < mData.size()){
+            return mData.get(i);
+        }
+        return null;
+    }
+
+    public void removeData(int position){
+//        mData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public boolean isLoading(){
+        return mIsLoading;
+    }
+
+    public void setLoadingFlag(){
+        mIsLoading = true;
+    }
+
+    public void setLoadingDone(){
+        mIsLoading = false;
+    }
+
+    public void setOnItemClickListener(ClickListener listener){
+        mListener = listener;
+    }
+
+    public interface ClickListener{
+        void onClick(int position);
+    }
+}
