@@ -45,11 +45,18 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public ImageViewHolder(View itemView) {
             super(itemView);
             image = (SimpleDraweeView)itemView.findViewById(R.id.newscontent_item_image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onClick(getAdapterPosition());
+                }
+            });
         }
     }
 
     private List<String> mData;
     private Context mContext;
+    private ClickListener mListener;
 
     public NewsContentAdapter(Context context){
         mContext = context;
@@ -121,5 +128,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {
 //        return super.getItemViewType(position);
         return mData.get(position).contains("src")? TYPE_IMAGE: TYPE_TEXT;
+    }
+
+    public void setClickListener(ClickListener listener){
+        mListener = listener;
+    }
+
+    public interface ClickListener{
+        void onClick(int position);
     }
 }
