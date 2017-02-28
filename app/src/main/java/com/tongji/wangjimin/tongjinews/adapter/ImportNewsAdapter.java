@@ -2,7 +2,6 @@ package com.tongji.wangjimin.tongjinews.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,11 +42,9 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private class FootHolder extends RecyclerView.ViewHolder{
-//        TextView textView;
         private ProgressBar progressBar;
         private FootHolder(View itemView) {
             super(itemView);
-//            textView = (TextView)itemView.findViewById(R.id.importnews_item_footer_text);
             progressBar = (ProgressBar)itemView.findViewById(R.id.importnews_item_progressbar);
         }
     }
@@ -65,7 +62,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View root = null;
+        View root;
         switch (viewType){
             case TYPE_NORMAL:
                 root = LayoutInflater.from(mContext).inflate(R.layout.importnews_recyclerview_item, parent, false);
@@ -92,8 +89,6 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 h.image.setImageURI(images.get(0));
                 break;
             case TYPE_FOOTER:
-                FootHolder f = (FootHolder)holder;
-//                f.textView.setText("Load more ...");
         }
     }
 
@@ -131,7 +126,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void removeData(int position){
-//        mData.remove(position);
+        mData.remove(position);
         notifyItemRemoved(position);
     }
 
