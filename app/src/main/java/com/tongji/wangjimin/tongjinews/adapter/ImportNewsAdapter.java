@@ -85,6 +85,8 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 h.title.setText(mData.get(position).getTitle());
                 List<String> images = mData.get(position).getImages();
                 if(images == null || images.size() < 1){
+//                    h.image.setBackgroundResource(R.color.green);
+                    h.image.setImageResource(R.color.green);
                     return;
                 }
                 h.image.setImageURI(images.get(0));
