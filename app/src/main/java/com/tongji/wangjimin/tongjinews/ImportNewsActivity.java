@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
 
 public class ImportNewsActivity extends AppCompatActivity {
@@ -20,7 +19,6 @@ public class ImportNewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_news);
         /* work */
-        Fresco.initialize(this);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_importnews);
         setSupportActionBar(mToolbar);
         mViewPager = (ViewPager)findViewById(R.id.viewpager);

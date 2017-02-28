@@ -2,6 +2,7 @@ package com.tongji.wangjimin.tongjinews.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,8 +84,9 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ViewHolder h = (ViewHolder)holder;
                 h.title.setText(mData.get(position).getTitle());
                 List<String> images = mData.get(position).getImages();
-                if(images == null || images.size() < 1)
+                if(images == null || images.size() < 1){
                     return;
+                }
                 h.image.setImageURI(images.get(0));
                 break;
             case TYPE_FOOTER:

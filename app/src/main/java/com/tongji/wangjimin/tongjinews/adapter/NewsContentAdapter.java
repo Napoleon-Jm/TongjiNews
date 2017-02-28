@@ -84,9 +84,11 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     endIndex = mData.get(position).lastIndexOf("png");
                 }
                 endIndex += 3;
-                //substring, 不包含endIndex位置上的字符.
-                String url = mData.get(position).substring(startIndex, endIndex);
-                ((ImageViewHolder)holder).image.setImageURI(url);
+                if(startIndex < endIndex){
+                    //substring, 不包含endIndex位置上的字符.
+                    String url = mData.get(position).substring(startIndex, endIndex);
+                    ((ImageViewHolder)holder).image.setImageURI(url);
+                }
                 break;
             }
             case TYPE_TEXT:{

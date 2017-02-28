@@ -34,6 +34,7 @@ public class ImportNewsListLoader {
     private List<News> mLoadedNewsList;
     private int mLoadBlockSize;
     private ExecutorService mPool;
+    private static final Object lock = new Object();
     private static ImportNewsListLoader instance;
 
     private ImportNewsListLoader(){
@@ -115,7 +116,9 @@ public class ImportNewsListLoader {
         }
         @Override
         public void run() {
-            newsList.add(new News(url));
+            synchronized (lock){
+                newsList.add(new News(url));
+            }
             cdl.countDown();
         }
     }
