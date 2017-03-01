@@ -2,6 +2,7 @@ package com.tongji.wangjimin.tongjinews.net;
 import android.annotation.TargetApi;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
 import com.tongji.wangjimin.tongjinews.net.util.Config;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by wangjimin on 17/2/24.
  * News
  */
-public class News implements Parcelable{
+public class News implements Parcelable, Comparable<News>{
     private String mTitle;
     private String mDate;
     private String mReadNum;
@@ -43,7 +44,8 @@ public class News implements Parcelable{
         if(dateAndNum != null){
             String str = dateAndNum.text().trim();
             int indexStart = str.indexOf("时间") + 3;
-            mDate = str.substring(indexStart, indexStart + 9);
+            mDate = str.substring(indexStart + 6, indexStart + 10) + "/" +
+                    str.substring(indexStart, indexStart + 5);
             indexStart = str.indexOf("次数") + 3;
             mReadNum = str.substring(indexStart);
         }
@@ -117,5 +119,10 @@ public class News implements Parcelable{
         dest.writeString(mReadNum);
         dest.writeString(mUrl);
         dest.writeStringList(mImages);
+    }
+
+    @Override
+    public int compareTo(@NonNull News o) {
+        return o.getDate().compareTo(this.getDate());
     }
 }

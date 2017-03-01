@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -100,6 +101,7 @@ public class ImportNewsListLoader {
             @Override
             public void run() {
                 mLeftUrls = mLoadedUrls.size();
+                Collections.sort(newsList);
                 callback.loadingDone(newsList);
             }
         }));
