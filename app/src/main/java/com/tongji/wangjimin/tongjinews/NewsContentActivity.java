@@ -3,16 +3,23 @@ package com.tongji.wangjimin.tongjinews;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentAdapter;
+import com.tongji.wangjimin.tongjinews.adapter.NewsContentImageAdapter;
 import com.tongji.wangjimin.tongjinews.net.News;
 import com.tongji.wangjimin.tongjinews.net.NewsContent;
+import com.tongji.wangjimin.tongjinews.net.util.Utils;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewsContentActivity extends AppCompatActivity {
 
@@ -33,6 +40,7 @@ public class NewsContentActivity extends AppCompatActivity {
     private final ReceiveHandler mHandler = new ReceiveHandler(this);
 
     private RecyclerView mRecyclerView;
+    private ViewPager mViewPager;
     private NewsContentAdapter mAdapter;
     private NewsContent mNewsContent;
 
@@ -41,9 +49,28 @@ public class NewsContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_content);
         /* work */
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_newcontent);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mViewPager = (ViewPager)findViewById(R.id.newscontent_viewpager);
+        mViewPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.GONE);
+            }
+        });
         mAdapter = new NewsContentAdapter(this);
+        mAdapter.setClickListener(new NewsContentAdapter.ClickListener() {
+            @Override
+            public void onClick(int position) {
+                List<String> data = new ArrayList<String>();
+                String url = Utils.parseImageUrl(mAdapter.getItemData(position));
+                data.add(url);
+                NewsContentImageAdapter adapter = new NewsContentImageAdapter(data, NewsContentActivity.this, mViewPager);
+                mViewPager.setVisibility(View.VISIBLE);
+                mViewPager.setAdapter(adapter);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         //接收 Activity 传递的对象.
@@ -69,5 +96,14 @@ public class NewsContentActivity extends AppCompatActivity {
                 mHandler.sendEmptyMessage(0);
             }
         }.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

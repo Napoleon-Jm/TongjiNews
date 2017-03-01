@@ -1,6 +1,7 @@
 package com.tongji.wangjimin.tongjinews.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -84,7 +85,6 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (holder.getItemViewType()){
             case TYPE_IMAGE:{
                 //test
-                String str = mData.get(position);
                 int startIndex = mData.get(position).indexOf("http");
                 int endIndex = mData.get(position).lastIndexOf("jpg");
                 if(endIndex == -1){
@@ -122,6 +122,13 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void setDataAndNotify(List<String> data){
         mData = data;
         notifyDataSetChanged();
+    }
+
+    @Nullable
+    public String getItemData(int pos){
+        if(pos < mData.size())
+            return mData.get(pos);
+        return null;
     }
 
     @Override

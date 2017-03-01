@@ -6,5 +6,7 @@
     <!--<color name="colorPrimaryDark">#303F9F</color>-->
     <color name="colorAccent">#FF4081</color>
     <color name="green">#05bcba</color>
+    <color name="green_opc">#cc05bcba</color>
+    <color name="gray_opc">#cccccccc</color>
     <color name="tabTextColor">#b5ebeb</color>
 </resources>
