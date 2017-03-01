@@ -29,12 +29,14 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ViewHolder extends RecyclerView.ViewHolder{
         private TextView title;
-        private TextView data;
+        private TextView date;
+        private TextView readNum;
         private SimpleDraweeView image;
         private ViewHolder(View itemView) {
             super(itemView);
             title = (TextView)itemView.findViewById(R.id.item_title);
-            data = (TextView)itemView.findViewById(R.id.item_date);
+            readNum = (TextView)itemView.findViewById(R.id.item_readnum);
+            date = (TextView)itemView.findViewById(R.id.item_date);
             image = (SimpleDraweeView)itemView.findViewById(R.id.item_image);
             itemView.setOnClickListener(v -> {
                 if(mListener != null)
@@ -82,7 +84,8 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case TYPE_NORMAL:
                 ViewHolder h = (ViewHolder)holder;
                 h.title.setText(mData.get(position).getTitle());
-                h.data.setText(mData.get(position).getDate());
+                h.date.setText(mData.get(position).getDate());
+                h.readNum.setText("Read: " + mData.get(position).getReadNum());
                 List<String> images = mData.get(position).getImages();
                 if(images == null || images.size() < 1){
 //                    h.image.setBackgroundResource(R.color.green);
