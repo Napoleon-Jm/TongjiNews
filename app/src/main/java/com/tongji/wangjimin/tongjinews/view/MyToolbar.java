@@ -16,6 +16,7 @@ import java.util.Date;
 public class MyToolbar extends Toolbar{
 
     private long mTime;
+    private DoubleClickListener mListener;
 
     public MyToolbar(Context context) {
         super(context);
@@ -37,11 +38,22 @@ public class MyToolbar extends Toolbar{
             case MotionEvent.ACTION_DOWN:
                 final long time = new Date().getTime();
                 if(time - mTime < 230){
-                    Toast.makeText(getContext(), "Double click.", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), "Double click.", Toast.LENGTH_LONG).show();
+                    if(mListener != null){
+                        mListener.onClick();
+                    }
                     return true;
                 }
                 mTime = time;
         }
         return super.onTouchEvent(ev);
+    }
+
+    public void setDoubleClickListener(DoubleClickListener listener){
+        mListener = listener;
+    }
+
+    public interface DoubleClickListener{
+        void onClick();
     }
 }

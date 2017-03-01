@@ -127,6 +127,19 @@ public class ImportNewsFragment extends Fragment {
         }
     }
 
+    public void scrollToTop(){
+        if(mRecyclerView == null){
+            Log.d("wjm", "mRecycler is null");
+            return;
+        }
+        LinearLayoutManager lManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        int firstvisableItem = lManager.findFirstVisibleItemPosition();
+        int visibleCount = lManager.findLastVisibleItemPosition() - firstvisableItem;
+        if(firstvisableItem > visibleCount*2){
+            mRecyclerView.scrollToPosition(visibleCount*2);
+        }
+        mRecyclerView.smoothScrollToPosition(0);
+    }
 
     private void loadData(){
         new FirstLoadTask().execute(this);

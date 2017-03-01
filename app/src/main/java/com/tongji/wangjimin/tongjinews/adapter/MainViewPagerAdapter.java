@@ -3,6 +3,7 @@ package com.tongji.wangjimin.tongjinews.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 
@@ -13,6 +14,7 @@ import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     private String[] mTitles = {"News", "Images"};
+    Fragment[] fragments = {new ImportNewsFragment(), new ImportNewsFragment()};
 
     public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -20,7 +22,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new ImportNewsFragment();
+        return fragments[position];
     }
 
     @Override
