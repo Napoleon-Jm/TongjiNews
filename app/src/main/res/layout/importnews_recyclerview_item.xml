@@ -11,10 +11,13 @@
     <TextView
         android:id="@+id/item_title"
         android:gravity="center_vertical"
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
+        android:paddingRight="5dp"
+        android:paddingEnd="5dp"
         android:layout_below="@id/item_image"
         android:layout_width="match_parent"
-        android:layout_height="35dp" />
+        android:layout_height="36dp" />
     <TextView
         android:id="@+id/item_date"
         android:text="2017/03/03"
