@@ -72,7 +72,6 @@ public class NewsContentActivity extends AppCompatActivity {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-
         //接收 Activity 传递的对象.
         Intent intent = getIntent();
         News newsInfo = intent.getParcelableExtra("newsinfo");

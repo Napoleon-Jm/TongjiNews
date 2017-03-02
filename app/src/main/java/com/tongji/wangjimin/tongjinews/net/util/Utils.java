@@ -1,9 +1,8 @@
 package com.tongji.wangjimin.tongjinews.net.util;
 
-import com.tongji.wangjimin.tongjinews.adapter.NewsContentAdapter;
-
 /**
  * Created by wangjimin on 17/2/28.
+ * Utils.
  */
 
 public class Utils {

@@ -2,11 +2,8 @@ package com.tongji.wangjimin.tongjinews;
 
 import android.annotation.TargetApi;
 
-import com.tongji.wangjimin.tongjinews.net.ImportNews;
-import com.tongji.wangjimin.tongjinews.net.NewsContent;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Created by wangjimin on 17/2/25.

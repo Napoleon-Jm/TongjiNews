@@ -3,7 +3,6 @@ package com.tongji.wangjimin.tongjinews.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 

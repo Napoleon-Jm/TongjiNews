@@ -129,7 +129,6 @@ public class ImportNewsFragment extends Fragment {
 
     public void scrollToTop(){
         if(mRecyclerView == null){
-            Log.d("wjm", "mRecycler is null");
             return;
         }
         LinearLayoutManager lManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
