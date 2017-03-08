@@ -26,16 +26,28 @@ public class ImportNewsLoaderWithCache {
         return instance;
     }
 
-    public List<News> loadWithCache(ImportNewsListLoader.ILoadingDone callback){
+    public List<News> loadWithCache(ILoadingWithCacheDone callback){
+        //
         return null;
     }
 
     private Cursor loadWithDb(){
+        //
         return null;
     }
 
-    private void loadWithNet(ImportNewsListLoader.ILoadingDone callback){
-        mNetLoader.load(callback);
+    private void loadWithNet(ILoadingWithCacheDone callback){
+        mNetLoader.load(new ImportNewsListLoader.ILoadingDone() {
+            @Override
+            public void loadingDone(List<News> newsList) {
+                callback.loadDone(newsList);
+                //todo db insert.
+            }
+        });
+    }
+
+    interface ILoadingWithCacheDone{
+        void loadDone(List<News> newsList);
     }
 
 }

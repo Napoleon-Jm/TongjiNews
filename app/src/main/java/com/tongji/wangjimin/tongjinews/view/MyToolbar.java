@@ -17,6 +17,7 @@ public class MyToolbar extends Toolbar{
 
     private long mTime;
     private DoubleClickListener mListener;
+    private static final int DOUBLE_CLICK_TIME = 230;
 
     public MyToolbar(Context context) {
         super(context);
@@ -37,7 +38,7 @@ public class MyToolbar extends Toolbar{
         switch(action){
             case MotionEvent.ACTION_DOWN:
                 final long time = new Date().getTime();
-                if(time - mTime < 230){
+                if(time - mTime < DOUBLE_CLICK_TIME){
 //                    Toast.makeText(getContext(), "Double click.", Toast.LENGTH_LONG).show();
                     if(mListener != null){
                         mListener.onClick();
