@@ -18,7 +18,8 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
                     NewsReaderContract.NewsEntry.COLUMN_NAME_TITLE + " TEXT," +
                     NewsReaderContract.NewsEntry.COLUMN_NAME_DATE + "TEXT," +
                     NewsReaderContract.NewsEntry.COLUMN_NAME_READNUM + "TEXT," +
-                    NewsReaderContract.NewsEntry.COLUMN_NAME_URL + " TEXT)";
+                    NewsReaderContract.NewsEntry.COLUMN_NAME_URL + " TEXT," +
+                    NewsReaderContract.NewsEntry.COLUMN_NAME_IMAGES + "TEXT)";
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsReaderContract.NewsEntry.TABLE_NAME;
 

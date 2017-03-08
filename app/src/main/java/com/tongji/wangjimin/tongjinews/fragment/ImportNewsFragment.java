@@ -1,6 +1,7 @@
 package com.tongji.wangjimin.tongjinews.fragment;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import com.tongji.wangjimin.tongjinews.NewsContentActivity;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.ImportNewsAdapter;
+import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
 import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
 
@@ -58,12 +60,17 @@ public class ImportNewsFragment extends Fragment {
     private ImportNewsAdapter mAdapter;
     private List<News> mNewsList;
     private boolean isFristVisiable = true;
+    private NewsReaderDbHelper mDbHelper;
+    private SQLiteDatabase mDb;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNewsListLoader = ImportNewsListLoader.getInstance();
         mAdapter = new ImportNewsAdapter(getContext());
+        mDbHelper = new NewsReaderDbHelper(getContext());
+        //todo Background?
+        mDb = mDbHelper.getWritableDatabase();
     }
 
     @Nullable
@@ -122,11 +129,13 @@ public class ImportNewsFragment extends Fragment {
         super.onStart();
         if(getUserVisibleHint() && isFristVisiable){
             isFristVisiable = false;
-            Log.d("wjm", this + "");
             loadData();
         }
     }
 
+    /**
+     * Quick scroll to top of the screen.
+     */
     public void scrollToTop(){
         if(mRecyclerView == null){
             return;
@@ -163,6 +172,14 @@ public class ImportNewsFragment extends Fragment {
                 });
             }
             return null;
+        }
+    }
+
+    private static class DbCallback implements ImportNewsListLoader.ILoadingDone{
+
+        @Override
+        public void loadingDone(List<News> newsList) {
+
         }
     }
 }
