@@ -58,6 +58,14 @@ public class News implements Parcelable, Comparable<News>{
         }
     }
 
+    public News(String title, String date, String readNum, String url, List<String> images){
+        mTitle = title;
+        mDate = date;
+        mReadNum = readNum;
+        mUrl = url;
+        mImages = images;
+    }
+
     private News(Parcel in) {
         mTitle = in.readString();
         mDate = in.readString();

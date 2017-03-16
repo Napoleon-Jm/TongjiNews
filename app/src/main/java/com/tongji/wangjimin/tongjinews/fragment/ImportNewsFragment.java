@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.tongji.wangjimin.tongjinews.NewsContentActivity;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.ImportNewsAdapter;
+import com.tongji.wangjimin.tongjinews.data.ImportNewsLoaderWithCache;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
 import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
@@ -56,7 +57,8 @@ public class ImportNewsFragment extends Fragment {
     }
     private final ReceiveHandler mHandler = new ReceiveHandler(this);
     private RecyclerView mRecyclerView;
-    private ImportNewsListLoader mNewsListLoader;
+//    private ImportNewsListLoader mNewsListLoader;
+    private ImportNewsLoaderWithCache mNewsListLoader;
     private ImportNewsAdapter mAdapter;
     private List<News> mNewsList;
     private boolean isFristVisiable = true;
@@ -66,7 +68,8 @@ public class ImportNewsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNewsListLoader = ImportNewsListLoader.getInstance();
+//        mNewsListLoader = ImportNewsListLoader.getInstance();
+        mNewsListLoader = ImportNewsLoaderWithCache.getInstance();
         mAdapter = new ImportNewsAdapter(getContext());
         mDbHelper = new NewsReaderDbHelper(getContext());
         //todo Background?
@@ -100,14 +103,14 @@ public class ImportNewsFragment extends Fragment {
                         new Thread(){
                             @Override
                             public void run() {
-                                mNewsListLoader.load(new ImportNewsListLoader.ILoadingDone() {
+                                mNewsListLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
                                     @Override
-                                    public void loadingDone(List<News> newsList) {
+                                    public void loadDone(List<News> newsList) {
                                         mNewsList = newsList;
                                         mHandler.sendEmptyMessage(lastVisibleItem);
                                         mAdapter.setLoadingDone();
                                     }
-                                });
+                                }, false);
                             }
                         }.start();
                     }
@@ -163,13 +166,13 @@ public class ImportNewsFragment extends Fragment {
             fragment = new WeakReference<>((ImportNewsFragment) params[0]);
             ImportNewsFragment actFragment = fragment.get();
             if(actFragment != null){
-                actFragment.mNewsListLoader.load(new ImportNewsListLoader.ILoadingDone() {
+                actFragment.mNewsListLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
                     @Override
-                    public void loadingDone(List<News> newsList) {
+                    public void loadDone(List<News> newsList) {
                         actFragment.mNewsList = newsList;
                         actFragment.mHandler.sendEmptyMessage(0);
                     }
-                });
+                }, false);
             }
             return null;
         }
