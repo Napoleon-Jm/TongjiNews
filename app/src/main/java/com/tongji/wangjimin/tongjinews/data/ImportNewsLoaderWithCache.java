@@ -1,8 +1,10 @@
 package com.tongji.wangjimin.tongjinews.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
@@ -20,30 +22,31 @@ import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.
  */
 
 public class ImportNewsLoaderWithCache {
-    private NewsReaderDbHelper mDbHelper;
-    private ImportNewsListLoader mNetLoader;
+    private static ImportNewsListLoader mNetLoader;
+    private static NewsReaderDbHelper mDbHelper;
     private static ImportNewsLoaderWithCache instance;
 
-    private ImportNewsLoaderWithCache(){
+    private ImportNewsLoaderWithCache(Context context){
         mNetLoader = ImportNewsListLoader.getInstance();
+        mDbHelper = new NewsReaderDbHelper(context);
     }
 
-    public static ImportNewsLoaderWithCache getInstance(){
+    public static ImportNewsLoaderWithCache getInstance(Context context){
         if(instance == null)
-            instance = new ImportNewsLoaderWithCache();
+            instance = new ImportNewsLoaderWithCache(context);
         return instance;
     }
 
     public List<News> loadWithCache(ILoadingWithCacheDone callback){
         //
-        loadWithNet(callback, false);
+        loadWithNet(callback, true);
         return loadWithDb();
     }
 
     private List<News> loadWithDb(){
         //
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor c =  db.query(TABLE_NAME, null, null, null, null, null, COLUMN_NAME_DATE, null);
+        Cursor c =  db.query(TABLE_NAME, null, null, null, null, null, COLUMN_NAME_DATE + " DESC", null);
         if(c.getCount() < 1)
             return null;
         List<News> news = new ArrayList<>();
@@ -73,8 +76,8 @@ public class ImportNewsLoaderWithCache {
                 e.printStackTrace();
             }
             news.add(new News(title, date, readNum, url, images));
-            c.close();
         }
+        c.close();
         return news;
     }
 
@@ -99,6 +102,12 @@ public class ImportNewsLoaderWithCache {
 
             }
         });
+    }
+
+    public void clearCache(){
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.execSQL("delete from entry where id not in (select top 5 id from entry order by id");
+        Log.d("wjm", "delete cache.");
     }
 
     public interface ILoadingWithCacheDone{

@@ -47,7 +47,7 @@ public class ImportNewsFragment extends Fragment {
             ImportNewsFragment actualFragment = fragment.get();
             if(actualFragment != null){
                 if(msg.what == 0)
-                    actualFragment.mAdapter.addAll(actualFragment.mNewsList);
+                    actualFragment.mAdapter.setDataAndNotify(actualFragment.mNewsList);
                 else {
                     actualFragment.mAdapter.addAll(actualFragment.mNewsList);
                     actualFragment.mAdapter.removeData(msg.what);
@@ -69,7 +69,7 @@ public class ImportNewsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        mNewsListLoader = ImportNewsListLoader.getInstance();
-        mNewsListLoader = ImportNewsLoaderWithCache.getInstance();
+        mNewsListLoader = ImportNewsLoaderWithCache.getInstance(getContext());
         mAdapter = new ImportNewsAdapter(getContext());
         mDbHelper = new NewsReaderDbHelper(getContext());
         //todo Background?
@@ -166,13 +166,21 @@ public class ImportNewsFragment extends Fragment {
             fragment = new WeakReference<>((ImportNewsFragment) params[0]);
             ImportNewsFragment actFragment = fragment.get();
             if(actFragment != null){
-                actFragment.mNewsListLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
+//                actFragment.mNewsListLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
+//                    @Override
+//                    public void loadDone(List<News> newsList) {
+//                        actFragment.mNewsList = newsList;
+//                        actFragment.mHandler.sendEmptyMessage(0);
+//                    }
+//                }, false);
+                actFragment.mNewsList = actFragment.mNewsListLoader.loadWithCache(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
                     @Override
                     public void loadDone(List<News> newsList) {
                         actFragment.mNewsList = newsList;
                         actFragment.mHandler.sendEmptyMessage(0);
                     }
-                }, false);
+                });
+                actFragment.mHandler.sendEmptyMessage(0);
             }
             return null;
         }
@@ -184,5 +192,16 @@ public class ImportNewsFragment extends Fragment {
         public void loadingDone(List<News> newsList) {
 
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mNewsListLoader.clearCache();
     }
 }

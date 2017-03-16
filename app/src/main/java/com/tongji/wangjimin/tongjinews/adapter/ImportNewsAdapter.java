@@ -113,6 +113,8 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void setDataAndNotify(List<News> data){
+        if(data == null)
+            return;
         mData = data;
         notifyDataSetChanged();
         Log.d("wjm", data.size() + "");

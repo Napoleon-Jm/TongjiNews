@@ -12,14 +12,15 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "News.db";
     private static int DATABASE_VERSION = 1;
+    /* Note the blank space between sql world. */
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + NewsReaderContract.NewsEntry.TABLE_NAME + " (" +
                     NewsReaderContract.NewsEntry._ID + " INTEGER PRIMARY KEY," +
                     NewsReaderContract.NewsEntry.COLUMN_NAME_TITLE + " TEXT," +
-                    NewsReaderContract.NewsEntry.COLUMN_NAME_DATE + "TEXT," +
-                    NewsReaderContract.NewsEntry.COLUMN_NAME_READNUM + "TEXT," +
+                    NewsReaderContract.NewsEntry.COLUMN_NAME_DATE + " TEXT," +
+                    NewsReaderContract.NewsEntry.COLUMN_NAME_READNUM + " TEXT," +
                     NewsReaderContract.NewsEntry.COLUMN_NAME_URL + " TEXT," +
-                    NewsReaderContract.NewsEntry.COLUMN_NAME_IMAGES + "TEXT)";
+                    NewsReaderContract.NewsEntry.COLUMN_NAME_IMAGES + " TEXT)";
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsReaderContract.NewsEntry.TABLE_NAME;
 
@@ -36,5 +37,10 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
     }
 }
