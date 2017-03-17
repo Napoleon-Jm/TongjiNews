@@ -131,7 +131,7 @@ public class News implements Parcelable, Comparable<News>{
 
     @Override
     public int compareTo(@NonNull News o) {
-        if(o == null)
+        if(o == null || o.getDate() == null || this.getDate() == null)
             return 1;
         return o.getDate().compareTo(this.getDate());
     }

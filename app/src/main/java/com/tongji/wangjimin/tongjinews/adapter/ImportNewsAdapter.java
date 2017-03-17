@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tongji.wangjimin.tongjinews.NewsApplication;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.net.News;
 
@@ -60,7 +61,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public ImportNewsAdapter(Context context){
         mContext = context;
-        mData = new ArrayList<>();
+        mData = NewsApplication.getInstance().getNewsList();
         mIsLoading = false;
     }
 
@@ -100,6 +101,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
+        //3 is on screen to show.
         if(mData.size() < 3)
             return mData.size();
         return mData.size() + 1;
@@ -123,6 +125,8 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void addAll(List<News> data){
         mData.addAll(data);
         notifyDataSetChanged();
+        List<News> debug = NewsApplication.getInstance().getNewsList();
+        int size = debug.size();
     }
 
     @Nullable

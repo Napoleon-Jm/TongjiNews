@@ -88,8 +88,9 @@ public class ImportNewsLoaderWithCache {
                 callback.loadDone(newsList);
                 //todo db insert.
                 if(cache){
+                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                    db.delete(TABLE_NAME, null, null);
                     for(News news : newsList){
-                        SQLiteDatabase db = mDbHelper.getWritableDatabase();
                         ContentValues values = new ContentValues();
                         values.put(COLUMN_NAME_TITLE, news.getTitle());
                         values.put(COLUMN_NAME_DATE, news.getDate());
@@ -105,9 +106,9 @@ public class ImportNewsLoaderWithCache {
     }
 
     public void clearCache(){
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        db.execSQL("delete from entry where id not in (select top 5 id from entry order by id");
-        Log.d("wjm", "delete cache.");
+//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+//        db.execSQL("delete from entry where id not in (select top 5 id from entry order by id");
+//        Log.d("wjm", "delete cache.");
     }
 
     public interface ILoadingWithCacheDone{
