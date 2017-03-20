@@ -1,34 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:id="@+id/activity_main"
+
+<android.support.v4.widget.DrawerLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawer_importnews"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.tongji.wangjimin.tongjinews.view.MyToolbar
-            android:id="@+id/toolbar_importnews"
-            app:layout_scrollFlags="scroll|enterAlways"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout_importnews"
-            app:tabMode="fixed"
-            app:tabIndicatorColor="#ffffff"
-            app:tabSelectedTextColor="#ffffff"
-            app:tabTextColor="@color/tabTextColor"
-            app:tabGravity="fill"
+            android:layout_height="wrap_content">
+            <com.tongji.wangjimin.tongjinews.view.MyToolbar
+                android:id="@+id/toolbar_importnews"
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout_importnews"
+                app:tabMode="fixed"
+                app:tabIndicatorColor="#ffffff"
+                app:tabSelectedTextColor="#ffffff"
+                app:tabTextColor="@color/tabTextColor"
+                app:tabGravity="fill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    </android.support.design.widget.CoordinatorLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_importnews"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav"
+        />
+
+
+
+</android.support.v4.widget.DrawerLayout>
