@@ -72,6 +72,7 @@ public class ImportNewsListLoader {
     @WorkerThread
     private void loadNewsUrl(Runnable urlCallback){
         String url = Config.getImportNewsUrl();
+        Log.d("wjm", url);
         Document doc = Documenter.loadDoc(url);
         if (doc != null) {
             Log.d("wjm", url);

@@ -5,8 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
+import com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment;
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 import com.tongji.wangjimin.tongjinews.view.MyToolbar;
 
@@ -27,6 +29,25 @@ public class ImportNewsActivity extends AppCompatActivity {
         mViewPager = (ViewPager)findViewById(R.id.viewpager);
         mAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d("wjm", "scroll " + position);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("wjm", "seleted " + position);
+                if(position == 1){
+                    ((DigestImageFragment)mAdapter.getItem(1)).reloadData();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.d("wjm", "state " + state);
+            }
+        });
         mTabLayout = (TabLayout)findViewById(R.id.tablayout_importnews);
         mTabLayout.setupWithViewPager(mViewPager);
         mToolbar.setDoubleClickListener(new MyToolbar.DoubleClickListener() {
