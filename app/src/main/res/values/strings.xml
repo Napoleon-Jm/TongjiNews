@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Tongji News</string>
+    <string name="favorites">Favorites</string>
+    <string name="messages">Messages</string>
+    <string name="friends">Friends</string>
+    <string name="about">About</string>
 </resources>

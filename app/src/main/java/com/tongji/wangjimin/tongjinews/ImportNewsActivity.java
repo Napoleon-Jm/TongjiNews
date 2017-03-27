@@ -1,6 +1,7 @@
 package com.tongji.wangjimin.tongjinews;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
 import com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment;
@@ -32,6 +34,22 @@ public class ImportNewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_import_news);
         /* work */
         mNav = (NavigationView) findViewById(R.id.nav_importnews);
+        mNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.item_fav:
+                    case R.id.item_msg:
+                    case R.id.item_friend:
+                        showMsg("To do, please wait, 3Q.", Toast.LENGTH_SHORT);
+                        break;
+                    case R.id.item_about:
+                        showMsg("WangJimin 7 years in Tongji University.", Toast.LENGTH_LONG);
+                        break;
+                }
+                return false;
+            }
+        });
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_importnews);
         mToolbar = (DoubleClickToolbar) findViewById(R.id.toolbar_importnews);
         setSupportActionBar(mToolbar);
@@ -79,6 +97,10 @@ public class ImportNewsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void showMsg(String text, int time){
+        Toast.makeText(this, text, time).show();
     }
 
     @Override

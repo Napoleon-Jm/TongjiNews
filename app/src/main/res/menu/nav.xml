@@ -2,16 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-        android:id="@+id/item_one"
-        android:icon="@mipmap/ic_launcher"
-        android:title="Favorites"/>
+        android:id="@+id/item_fav"
+        android:icon="@drawable/ic_stars_black_24dp"
+        android:title="@string/favorites"/>
         <item
-        android:id="@+id/item_two"
-        android:icon="@mipmap/ic_launcher"
-        android:title="Messages"/>
+        android:id="@+id/item_msg"
+        android:icon="@drawable/ic_message_black_24dp"
+        android:title="@string/messages"/>
         <item
-        android:id="@+id/item_three"
-        android:icon="@mipmap/ic_launcher"
-        android:title="Friends"/>
+        android:id="@+id/item_friend"
+        android:icon="@drawable/ic_group_black_24dp"
+        android:title="@string/friends"/>
+        <item
+            android:id="@+id/item_about"
+            android:icon="@drawable/ic_account_box_black_24dp"
+            android:title="@string/about" />
     </group>
 </menu>
