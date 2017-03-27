@@ -15,4 +15,8 @@ public class Config {
             return "http://news.tongji.edu.cn/classid-15-" + sCurrentPage + ".html";
         }
     }
+
+    public static String getFreshImportNewsUrl(){
+        return IMPORT_NEWS_URL;
+    }
 }

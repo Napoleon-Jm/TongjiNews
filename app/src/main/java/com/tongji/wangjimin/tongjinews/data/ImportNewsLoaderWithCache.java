@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
@@ -19,6 +18,7 @@ import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.
 
 /**
  * Created by wangjimin on 17/3/8.
+ * ImportNewsLoaderWithCache.
  */
 
 public class ImportNewsLoaderWithCache {
@@ -105,7 +105,19 @@ public class ImportNewsLoaderWithCache {
         });
     }
 
+    public void loadRefresh(ILoadingWithCacheDone callback){
+        mNetLoader.loadRefresh(new ImportNewsListLoader.ILoadingDone() {
+            @Override
+            public void loadingDone(List<News> newsList) {
+                if(callback != null){
+                    callback.loadDone(newsList);
+                }
+            }
+        });
+    }
+
     public void clearCache(){
+        // Other way, delete db every time when fresh news come.
 //        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 //        db.execSQL("delete from entry where id not in (select top 5 id from entry order by id");
 //        Log.d("wjm", "delete cache.");

@@ -71,7 +71,16 @@ public class ImportNewsListLoader {
 
     @WorkerThread
     private void loadNewsUrl(Runnable urlCallback){
-        String url = Config.getImportNewsUrl();
+        List<String> urls = loadUrl(Config.getImportNewsUrl());
+        if(urls != null)
+            mLoadedUrls.addAll(urls);
+        mLeftUrls = mLoadedUrls.size();
+        if(urlCallback != null)
+            urlCallback.run();
+    }
+
+    private List<String> loadUrl(String pageUrl){
+        String url = pageUrl;
         Log.d("wjm", url);
         Document doc = Documenter.loadDoc(url);
         if (doc != null) {
@@ -84,10 +93,22 @@ public class ImportNewsListLoader {
                     Element a = li.child(0);
                     urls.add(a.attr("href"));
                 }
-                mLoadedUrls.addAll(urls);
-                mLeftUrls = mLoadedUrls.size();
-                if(urlCallback != null)
-                    urlCallback.run();
+                return urls;
+            }
+        }
+        return null;
+    }
+
+    @WorkerThread
+    public void loadRefresh(ILoadingDone callback){
+        List<String> refreshUrl = loadUrl(Config.getFreshImportNewsUrl());
+        if(refreshUrl != null){
+            for(String url : refreshUrl){
+                if(!refreshUrl.contains(url)){
+                    // TODO: 17/3/27
+                    // load refresh news, and return news list;
+                    callback.loadingDone(null);
+                }
             }
         }
     }

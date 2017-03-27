@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.tongji.wangjimin.tongjinews.data.ImportNewsLoaderWithCache;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
 import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
+import com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -47,17 +49,22 @@ public class ImportNewsFragment extends Fragment {
             super.handleMessage(msg);
             ImportNewsFragment actualFragment = fragment.get();
             if(actualFragment != null){
-                if(msg.what == 0)
+                if(msg.what == 0){
                     actualFragment.mAdapter.setDataAndNotify(NewsApplication.getInstance().getNewsList());
-                else {
+                    actualFragment.mSwipeLayout.setRefreshing(false);
+                }
+                else if(msg.what == 1){
                     actualFragment.mAdapter.addAll(actualFragment.mNewsList);
 //                    actualFragment.mAdapter.removeData(msg.what);
+                } else {
+                    actualFragment.mSwipeLayout.setRefreshing(false);
                 }
             }
         }
     }
     private final ReceiveHandler mHandler = new ReceiveHandler(this);
-    private RecyclerView mRecyclerView;
+    private RefreshRecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeLayout;
 //    private ImportNewsListLoader mNewsListLoader;
     private ImportNewsLoaderWithCache mNewsListLoader;
     private ImportNewsAdapter mAdapter;
@@ -68,7 +75,6 @@ public class ImportNewsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mNewsListLoader = ImportNewsListLoader.getInstance();
         mNewsListLoader = ImportNewsLoaderWithCache.getInstance(getContext());
         mAdapter = new ImportNewsAdapter(getContext());
         mDbHelper = new NewsReaderDbHelper(getContext());
@@ -80,7 +86,20 @@ public class ImportNewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_importnews, container, false);
-        mRecyclerView = (RecyclerView)root.findViewById(R.id.recyclerview_main);
+        mRecyclerView = (RefreshRecyclerView) root.findViewById(R.id.recyclerview_main);
+        mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefresh_main);
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mNewsListLoader.loadRefresh(null);
+                        mHandler.sendEmptyMessage(2);
+                    }
+                }).start();
+            }
+        });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         mAdapter.setOnItemClickListener(position -> {
@@ -90,38 +109,19 @@ public class ImportNewsFragment extends Fragment {
             startActivity(intent);
         });
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            private int lastVisibleItem = -1;
+        mRecyclerView.setRefreshWork(new RefreshRecyclerView.Refresher() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItem + 1== recyclerView.getAdapter().getItemCount())){
-                    if(!mAdapter.isLoading()){
-                        //loading next page.
-                        mAdapter.setLoadingFlag();
-                        new Thread(){
-                            @Override
-                            public void run() {
-                                mNewsListLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
-                                    @Override
-                                    public void loadDone(List<News> newsList) {
-                                        mNewsList = newsList;
-                                        mHandler.sendEmptyMessage(lastVisibleItem);
-                                        mAdapter.setLoadingDone();
-                                    }
-                                }, false);
-                            }
-                        }.start();
+            public void refresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mNewsListLoader.loadWithNet(newsList -> {
+                            mNewsList = newsList;
+                            mHandler.sendEmptyMessage(1);
+                            mRecyclerView.setLoadingDone();
+                        }, false);
                     }
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager manager = (LinearLayoutManager)recyclerView.getLayoutManager();
-                lastVisibleItem = manager.findLastVisibleItemPosition();
+                }).start();
             }
         });
         return root;
@@ -132,6 +132,7 @@ public class ImportNewsFragment extends Fragment {
         super.onStart();
         if(getUserVisibleHint() && isFristVisiable){
             isFristVisiable = false;
+            mSwipeLayout.setRefreshing(true);
             loadData();
         }
     }
@@ -180,23 +181,13 @@ public class ImportNewsFragment extends Fragment {
         }
     }
 
-    private static class DbCallback implements ImportNewsListLoader.ILoadingDone{
-
-        @Override
-        public void loadingDone(List<News> newsList) {
-
-        }
-    }
-
     @Override
     public void onStop() {
         super.onStop();
-//        mNewsListLoader.clearCache();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        mNewsListLoader.clearCache();
     }
 }
