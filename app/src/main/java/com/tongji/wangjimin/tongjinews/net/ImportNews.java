@@ -18,8 +18,13 @@ import java.util.concurrent.Executors;
 /**
  * Created by wangjimin on 17/2/24.
  * ImportNews.
+ *
+ * News Loader v1.0 is deprecated
+ *
+ * see {@link ImportNewsListLoader}
+ *
  */
-public class ImportNews {
+class ImportNews {
     private List<News> mNewsList;
     private List<String> mUrlList;
     private ExecutorService mPool;
@@ -41,7 +46,6 @@ public class ImportNews {
         mNewsList = new ArrayList<>();
         mUrlList = new ArrayList<>();
         mLeftUrls = 0;
-//        loadNewsUrl(url);
         loadNextPage(null);
     }
 
@@ -121,7 +125,7 @@ public class ImportNews {
     }
 
     @WorkerThread
-    public void loadNextPage(Runnable callback){
+    private void loadNextPage(Runnable callback){
         String url = Config.getImportNewsUrl();
         loadNewsUrl(url);
         if(callback != null)

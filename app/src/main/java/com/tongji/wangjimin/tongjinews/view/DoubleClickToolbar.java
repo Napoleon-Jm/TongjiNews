@@ -10,35 +10,39 @@ import java.util.Date;
 
 /**
  * Created by wangjimin on 17/3/1.
+ * DoubleClickToolbar
  */
 
-public class MyToolbar extends Toolbar{
+public class DoubleClickToolbar extends Toolbar{
 
     private long mTime;
     private DoubleClickListener mListener;
+    // Double click interval.
     private static final int DOUBLE_CLICK_TIME = 230;
 
-    public MyToolbar(Context context) {
+    public DoubleClickToolbar(Context context) {
         super(context);
     }
 
-    public MyToolbar(Context context, @Nullable AttributeSet attrs) {
+    public DoubleClickToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MyToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DoubleClickToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    /*
+     * 覆盖此方法，为了给 ToolBar 增加双击的监听器
+     * 从而将 RecyclerView 快速滑动到顶部。
+     */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-//        return super.onTouchEvent(ev);
         final int action = ev.getAction();
         switch(action){
             case MotionEvent.ACTION_DOWN:
                 final long time = new Date().getTime();
                 if(time - mTime < DOUBLE_CLICK_TIME){
-//                    Toast.makeText(getContext(), "Double click.", Toast.LENGTH_LONG).show();
                     if(mListener != null){
                         mListener.onClick();
                     }

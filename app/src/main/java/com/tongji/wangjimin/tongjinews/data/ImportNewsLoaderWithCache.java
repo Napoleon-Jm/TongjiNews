@@ -19,6 +19,12 @@ import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.
 /**
  * Created by wangjimin on 17/3/8.
  * ImportNewsLoaderWithCache.
+ *
+ * 1. Data sources, include
+ * database and network.
+ * 2. Two level cache.
+ * 3. Supported by Jsoup.
+ *
  */
 
 public class ImportNewsLoaderWithCache {
@@ -38,7 +44,6 @@ public class ImportNewsLoaderWithCache {
     }
 
     public List<News> loadWithCache(ILoadingWithCacheDone callback){
-        //
         loadWithNet(callback, true);
         return loadWithDb();
     }

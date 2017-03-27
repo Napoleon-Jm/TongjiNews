@@ -7,7 +7,6 @@ package com.tongji.wangjimin.tongjinews.net.util;
 
 public class Utils {
     public static String parseImageUrl(String tag){
-        //test
         int startIndex = tag.indexOf("http");
         int endIndex = tag.lastIndexOf("jpg");
         if(endIndex == -1){

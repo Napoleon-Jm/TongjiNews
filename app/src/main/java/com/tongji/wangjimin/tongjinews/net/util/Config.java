@@ -2,6 +2,7 @@ package com.tongji.wangjimin.tongjinews.net.util;
 
 /**
  * Created by wangjimin on 17/2/24.
+ * Config info for news loader.
  */
 public class Config {
     private static int sCurrentPage = 0;

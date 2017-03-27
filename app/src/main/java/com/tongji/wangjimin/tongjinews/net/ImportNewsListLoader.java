@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by wangjimin on 17/2/27.
  * ImportNewsLoader.
+ * New news loader.
  */
 
 public class ImportNewsListLoader {
@@ -85,7 +86,6 @@ public class ImportNewsListLoader {
         Log.d("wjm", url);
         Document doc = Documenter.loadDoc(url);
         if (doc != null) {
-            Log.d("wjm", url);
             Elements newsLists = doc.select(".news_list");
             Element newsList = null;
             newsList = newsLists.get(2);

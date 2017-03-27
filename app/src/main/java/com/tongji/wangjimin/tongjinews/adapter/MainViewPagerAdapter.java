@@ -14,7 +14,7 @@ import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     private String[] mTitles = {"News", "Images"};
-    Fragment[] fragments = {new ImportNewsFragment(), new DigestImageFragment()};
+    private Fragment[] fragments = {new ImportNewsFragment(), new DigestImageFragment()};
 
     public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);

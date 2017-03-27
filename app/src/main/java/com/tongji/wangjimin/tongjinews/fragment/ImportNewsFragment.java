@@ -55,6 +55,7 @@ public class ImportNewsFragment extends Fragment {
                 }
                 else if(msg.what == 1){
                     actualFragment.mAdapter.addAll(actualFragment.mNewsList);
+                    //不需要删除列表中最后一项的加载页面，因为 Notify 信息源变更后，信息会自动更新，加载页面会自动更新到新的最后的位置。
 //                    actualFragment.mAdapter.removeData(msg.what);
                 } else {
                     actualFragment.mSwipeLayout.setRefreshing(false);
@@ -65,7 +66,6 @@ public class ImportNewsFragment extends Fragment {
     private final ReceiveHandler mHandler = new ReceiveHandler(this);
     private RefreshRecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeLayout;
-//    private ImportNewsListLoader mNewsListLoader;
     private ImportNewsLoaderWithCache mNewsListLoader;
     private ImportNewsAdapter mAdapter;
     private List<News> mNewsList;

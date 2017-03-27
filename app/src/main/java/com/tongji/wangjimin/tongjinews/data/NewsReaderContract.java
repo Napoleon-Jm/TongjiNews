@@ -4,6 +4,8 @@ import android.provider.BaseColumns;
 
 /**
  * Created by wangjimin on 17/3/7.
+ *
+ * Db Contract.
  */
 
 public class NewsReaderContract {

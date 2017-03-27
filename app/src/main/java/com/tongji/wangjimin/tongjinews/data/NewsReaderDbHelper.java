@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by wangjimin on 17/3/7.
+ *
+ * DbHelper, could be optimized by ORM framework.
  */
 
 public class NewsReaderDbHelper extends SQLiteOpenHelper {

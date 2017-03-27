@@ -10,17 +10,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
 import com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment;
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
-import com.tongji.wangjimin.tongjinews.view.MyToolbar;
+import com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar;
 
 public class ImportNewsActivity extends AppCompatActivity {
 
-    private MyToolbar mToolbar;
+    private DoubleClickToolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private NavigationView mNav;
@@ -34,7 +33,7 @@ public class ImportNewsActivity extends AppCompatActivity {
         /* work */
         mNav = (NavigationView) findViewById(R.id.nav_importnews);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_importnews);
-        mToolbar = (MyToolbar) findViewById(R.id.toolbar_importnews);
+        mToolbar = (DoubleClickToolbar) findViewById(R.id.toolbar_importnews);
         setSupportActionBar(mToolbar);
         mViewPager = (ViewPager)findViewById(R.id.viewpager);
         mAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
@@ -42,12 +41,10 @@ public class ImportNewsActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                Log.d("wjm", "scroll " + position);
             }
 
             @Override
             public void onPageSelected(int position) {
-//                Log.d("wjm", "seleted " + position);
                 if(position == 1){
                     ((DigestImageFragment)mAdapter.getItem(1)).reloadData();
                 } else {
@@ -57,19 +54,18 @@ public class ImportNewsActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-//                Log.d("wjm", "state " + state);
             }
         });
         mTabLayout = (TabLayout)findViewById(R.id.tablayout_importnews);
         mTabLayout.setupWithViewPager(mViewPager);
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_format_list_bulleted_white_24dp, null);
         mToolbar.setNavigationIcon(drawable);
-        mToolbar.setDoubleClickListener(new MyToolbar.DoubleClickListener() {
+        mToolbar.setDoubleClickListener(new DoubleClickToolbar.DoubleClickListener() {
             @Override
             public void onClick() {
                 if(mViewPager.getCurrentItem() == 0){
                     Fragment fragment = mAdapter.getItem(0);
-                    ((ImportNewsFragment)mAdapter.getItem(0)).scrollToTop();
+                    ((ImportNewsFragment)fragment).scrollToTop();
                 }
             }
         });

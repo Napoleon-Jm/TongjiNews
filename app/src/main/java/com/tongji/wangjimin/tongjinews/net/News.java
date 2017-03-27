@@ -51,6 +51,7 @@ public class News implements Parcelable, Comparable<News>{
         }
         if(content != null){
             //collect. @TargetApi(24);
+            // 此时的 Android Studio 还不支持 Java8 的 steam 特性。
 //            mImages.addAll(content.select("img").stream().map(e -> e.attr("src")).collect(Collectors.toList()));
             for(Element img:content.select("img")){
                 mImages.add(img.attr("src"));

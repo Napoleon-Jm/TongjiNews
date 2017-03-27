@@ -43,7 +43,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
      */
     private class ImageViewHolder extends RecyclerView.ViewHolder{
         private SimpleDraweeView image;
-        public ImageViewHolder(View itemView) {
+        private ImageViewHolder(View itemView) {
             super(itemView);
             image = (SimpleDraweeView)itemView.findViewById(R.id.newscontent_item_image);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             }
             case TYPE_TEXT:{
-                /**
+                /*
                  * Make {@link TextView} show html.
                  */
                 Spanned result;

@@ -15,7 +15,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <com.tongji.wangjimin.tongjinews.view.MyToolbar
+            <com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar
                 android:id="@+id/toolbar_importnews"
                 app:layout_scrollFlags="scroll|enterAlways"
                 android:layout_width="match_parent"
