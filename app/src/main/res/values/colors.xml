@@ -9,4 +9,6 @@
     <color name="green_opc">#cc05bcba</color>
     <color name="gray_opc">#cccccccc</color>
     <color name="tabTextColor">#b5ebeb</color>
+    
+    <color name="image_front_hint">#66cccccc</color>
 </resources>

@@ -43,8 +43,9 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ImageViewHolder imageHolder = (ImageViewHolder)holder;
         List<String> images = getDataSet().get(position);
-        if(images != null && images.size() > 0)
+        if(images != null && images.size() > 0){
             imageHolder.image.setImageURI(images.get(0));
+        }
     }
 
     @Override

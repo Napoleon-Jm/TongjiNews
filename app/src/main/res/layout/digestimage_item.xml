@@ -16,4 +16,9 @@
         android:id="@+id/simpledraweeview_item"
         android:layout_width="match_parent"
         android:layout_height="110dp" />
+    <ImageView
+        android:src="@drawable/ic_perm_media_white_24dp"
+        android:layout_gravity="end|bottom"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
 </android.support.v7.widget.CardView>
