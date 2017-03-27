@@ -15,7 +15,6 @@ import com.tongji.wangjimin.tongjinews.NewsApplication;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.net.News;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -123,10 +122,11 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     public void addAll(List<News> data){
-        mData.addAll(data);
+//        mData.addAll(data);
+        NewsApplication.getInstance().addNews(data);
         notifyDataSetChanged();
-        List<News> debug = NewsApplication.getInstance().getNewsList();
-        int size = debug.size();
+//        List<News> debug = NewsApplication.getInstance().getNewsList();
+//        int size = debug.size();
     }
 
     @Nullable

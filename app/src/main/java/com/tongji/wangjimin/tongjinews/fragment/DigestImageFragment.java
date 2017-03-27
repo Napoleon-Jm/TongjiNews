@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class DigestImageFragment extends Fragment {
         mRecyclerView = (RecyclerView)root.findViewById(R.id.recyclerview_digestimage);
         mAdapter = new DigestImageAdapter(getContext());
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         return root;
     }
 
@@ -48,6 +49,7 @@ public class DigestImageFragment extends Fragment {
     }
 
     public void reloadData(){
+        Log.d("wjm", "reload " + mAdapter.getItemCount());
         mAdapter.notifyDataSetChanged();
     }
 }

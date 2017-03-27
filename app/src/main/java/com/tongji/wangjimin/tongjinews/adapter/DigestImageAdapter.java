@@ -21,7 +21,7 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class ImageViewHolder extends RecyclerView.ViewHolder{
         private SimpleDraweeView image;
-        public ImageViewHolder(View itemView) {
+        private ImageViewHolder(View itemView) {
             super(itemView);
             image = (SimpleDraweeView)itemView.findViewById(R.id.simpledraweeview_item);
         }
@@ -42,7 +42,7 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ImageViewHolder imageHolder = (ImageViewHolder)holder;
-        List<String> images = getDataSet().get(position).getImages();
+        List<String> images = getDataSet().get(position);
         if(images != null && images.size() > 0)
             imageHolder.image.setImageURI(images.get(0));
     }
@@ -52,8 +52,8 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return getDataSet().size();
     }
 
-    public List<News> getDataSet(){
-        return NewsApplication.getInstance().getNewsList();
+    public List<List<String> > getDataSet(){
+        return NewsApplication.getInstance().getImageList();
     }
 
     public void addAll(List<News> news){
