@@ -7,6 +7,7 @@ import com.tongji.wangjimin.tongjinews.net.util.Config;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,7 +86,9 @@ public class ImportNewsListLoader {
         Document doc = Documenter.loadDoc(url);
         if (doc != null) {
             Log.d("wjm", url);
-            Element newsList = doc.select(".news_list").get(2);
+            Elements newsLists = doc.select(".news_list");
+            Element newsList = null;
+            newsList = newsLists.get(2);
             if (newsList != null) {
                 List<String> urls = new ArrayList<>();
                 Element ul = newsList.child(0);

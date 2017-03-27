@@ -142,18 +142,6 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRemoved(position);
     }
 
-    public boolean isLoading(){
-        return mIsLoading;
-    }
-
-    public void setLoadingFlag(){
-        mIsLoading = true;
-    }
-
-    public void setLoadingDone(){
-        mIsLoading = false;
-    }
-
     public void setOnItemClickListener(ClickListener listener){
         mListener = listener;
     }

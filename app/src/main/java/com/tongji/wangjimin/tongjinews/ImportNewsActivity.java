@@ -50,6 +50,8 @@ public class ImportNewsActivity extends AppCompatActivity {
 //                Log.d("wjm", "seleted " + position);
                 if(position == 1){
                     ((DigestImageFragment)mAdapter.getItem(1)).reloadData();
+                } else {
+                    ((ImportNewsFragment)mAdapter.getItem(0)).reloadData();
                 }
             }
 
