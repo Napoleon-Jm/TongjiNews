@@ -42,7 +42,6 @@
         </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_newcontent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
