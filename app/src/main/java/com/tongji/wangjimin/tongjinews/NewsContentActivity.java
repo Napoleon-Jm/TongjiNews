@@ -3,13 +3,13 @@ package com.tongji.wangjimin.tongjinews;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,6 +18,8 @@ import com.tongji.wangjimin.tongjinews.adapter.NewsContentImageAdapter;
 import com.tongji.wangjimin.tongjinews.net.News;
 import com.tongji.wangjimin.tongjinews.net.NewsContent;
 import com.tongji.wangjimin.tongjinews.net.util.Utils;
+
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -83,6 +85,7 @@ public class NewsContentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         News newsInfo = intent.getParcelableExtra("newsinfo");
         mCollapsLayout.setTitle(newsInfo.getTitle());
+        Log.d("wjm", newsInfo.getTitle());
         /*
          * Why also remind me worker thread annotation.
          */

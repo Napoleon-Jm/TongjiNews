@@ -17,10 +17,12 @@
 
     <!-- fitSystemWindows = true -->
     <!-- contentScrim = "?attr/colorPrimary" -->
-        <android.support.design.widget.CollapsingToolbarLayout
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
             android:id="@+id/collapslayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:expandedTitleTextAppearance="@style/CollapsingApp"
+            app:expandedTitleGravity="bottom|start"
             app:contentScrim="@color/colorPrimary"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -37,7 +39,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ToolbarTheme"
                 app:layout_collapseMode="pin"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
 

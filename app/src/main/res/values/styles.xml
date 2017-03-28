@@ -25,5 +25,9 @@
 
     </style>
 
+    <style name="CollapsingApp">
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
 </resources>
