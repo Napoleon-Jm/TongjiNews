@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:name=".NewsApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".NewsContentActivity" />
+        <activity android:name=".NewsContentActivity"
+            android:theme="@style/NoActionBar"/>
         <activity android:name=".ImportNewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">

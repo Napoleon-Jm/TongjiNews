@@ -3,11 +3,13 @@ package com.tongji.wangjimin.tongjinews;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -39,6 +41,8 @@ public class NewsContentActivity extends AppCompatActivity {
     }
     private final ReceiveHandler mHandler = new ReceiveHandler(this);
 
+    private CollapsingToolbarLayout mCollapsLayout;
+    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private ViewPager mViewPager;
     private NewsContentAdapter mAdapter;
@@ -49,6 +53,9 @@ public class NewsContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_content);
         /* work */
+        mCollapsLayout = (CollapsingToolbarLayout)findViewById(R.id.collapslayout);
+        mToolbar = (Toolbar)findViewById(R.id.content_toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_newcontent);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -75,7 +82,8 @@ public class NewsContentActivity extends AppCompatActivity {
         //接收 Activity 传递的对象.
         Intent intent = getIntent();
         News newsInfo = intent.getParcelableExtra("newsinfo");
-        /**
+        mCollapsLayout.setTitle(newsInfo.getTitle());
+        /*
          * Why also remind me worker thread annotation.
          */
 //        new Thread(()->{
