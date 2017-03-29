@@ -28,6 +28,7 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private Context mContext;
+    private ItemClickListener mListener;
 
     public DigestImageAdapter(Context context){
         mContext = context;
@@ -45,6 +46,14 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         List<String> images = getDataSet().get(position);
         if(images != null && images.size() > 0){
             imageHolder.image.setImageURI(images.get(0));
+            imageHolder.image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        mListener.onClick(v, imageHolder.getAdapterPosition());
+                    }
+                }
+            });
         }
     }
 
@@ -62,4 +71,11 @@ public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setItemClickListener(ItemClickListener listener){
+        mListener = listener;
+    }
+
+    public interface ItemClickListener{
+        void onClick(View v, int pos);
+    }
 }

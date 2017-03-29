@@ -2,6 +2,7 @@ package com.tongji.wangjimin.tongjinews;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar;
 
 public class ImportNewsActivity extends AppCompatActivity {
 
+    private AppBarLayout mAppBarLayout;
     private DoubleClickToolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -51,6 +53,7 @@ public class ImportNewsActivity extends AppCompatActivity {
             }
         });
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_importnews);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_main);
         mToolbar = (DoubleClickToolbar) findViewById(R.id.toolbar_importnews);
         setSupportActionBar(mToolbar);
         mViewPager = (ViewPager)findViewById(R.id.viewpager);
@@ -87,6 +90,10 @@ public class ImportNewsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void collapseToolbar(){
+        mAppBarLayout.setExpanded(false, true);
     }
 
     @Override

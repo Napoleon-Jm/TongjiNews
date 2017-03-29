@@ -6,16 +6,21 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tongji.wangjimin.tongjinews.ImportNewsActivity;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.DigestImageAdapter;
 import com.tongji.wangjimin.tongjinews.data.ImportNewsLoaderWithCache;
 import com.tongji.wangjimin.tongjinews.net.News;
+import com.tongji.wangjimin.tongjinews.test.TestAdapter;
+import com.tongji.wangjimin.tongjinews.view.FlipRecyclerView;
 import com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView;
 
 import java.lang.ref.WeakReference;
@@ -27,10 +32,11 @@ import java.util.List;
 
 public class DigestImageFragment extends Fragment {
 
+    /* No leak memory */
     private static class RecvHandler extends Handler{
         private WeakReference<DigestImageFragment> wRef;
         private RecvHandler(DigestImageFragment fragment){
-            wRef = new WeakReference<DigestImageFragment>(fragment);
+            wRef = new WeakReference<>(fragment);
         }
         @Override
         public void handleMessage(Message msg) {
@@ -51,6 +57,7 @@ public class DigestImageFragment extends Fragment {
 
     private SwipeRefreshLayout mSwipeLayout;
     private RefreshRecyclerView mRecyclerView;
+    private FlipRecyclerView mFlipRecyclerView;
     private RecvHandler mHandler;
     private List<News> mNewsList;
     private ImportNewsLoaderWithCache mDataLoader;
@@ -66,44 +73,36 @@ public class DigestImageFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_digestimage, container, false);
         mSwipeLayout = (SwipeRefreshLayout)root.findViewById(R.id.swiperefresh_digestimage);
-        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDataLoader.loadRefresh(null);
-                        mHandler.sendEmptyMessage(2);
-                    }
-                }).start();
-            }
-        });
+        mSwipeLayout.setOnRefreshListener(() -> new Thread(() -> {
+            mDataLoader.loadRefresh(null);
+            mHandler.sendEmptyMessage(2);
+        }).start());
         mRecyclerView = (RefreshRecyclerView)root.findViewById(R.id.recyclerview_digestimage);
         mAdapter = new DigestImageAdapter(getContext());
+        mAdapter.setItemClickListener((v, pos) -> {
+            mFlipRecyclerView.setVisibility(View.VISIBLE);
+            ((ImportNewsActivity)getActivity()).collapseToolbar();
+        });
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mRecyclerView.setRefreshWork(new RefreshRecyclerView.Refresher() {
-            @Override
-            public void refresh() {
-                mSwipeLayout.setRefreshing(true);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDataLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
-                            @Override
-                            public void loadDone(List<News> newsList) {
-                                mNewsList = newsList;
-                                mHandler.sendEmptyMessage(1);
-                                mRecyclerView.setLoadingDone();
-                            }
-                        }, false);
-                    }
-                }).start();
-            }
+        mRecyclerView.setRefreshWork(() -> {
+            mSwipeLayout.setRefreshing(true);
+            new Thread(() -> mDataLoader.loadWithNet(newsList -> {
+                mNewsList = newsList;
+                mHandler.sendEmptyMessage(1);
+                mRecyclerView.setLoadingDone();
+            }, false)).start();
         });
+        mFlipRecyclerView = (FlipRecyclerView)root.findViewById(R.id.fliprecyclerview);
+        mFlipRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        mFlipRecyclerView.setAdapter(new TestAdapter(getContext()));
+        mFlipRecyclerView.addItemDecoration(new DividerItemDecoration(getContext()
+                , DividerItemDecoration.HORIZONTAL));
         return root;
     }
 

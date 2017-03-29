@@ -59,10 +59,27 @@ public class FlipRecyclerView extends RecyclerView {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+        /* 防止与 ViewPager 冲突，阻止父控件拦截事件 */
+        LinearLayoutManager manager = (LinearLayoutManager)this.getLayoutManager();
+        int firstIndex = manager.findFirstVisibleItemPosition();
+        int lastIndex = manager.findLastVisibleItemPosition();
+        if(firstIndex == 0 || lastIndex == getAdapter().getItemCount() - 1){
+            getParent().requestDisallowInterceptTouchEvent(true);
+        }
+        return super.onInterceptTouchEvent(e);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent e) {
         LinearLayoutManager manager = (LinearLayoutManager)this.getLayoutManager();
         int firstIndex = manager.findFirstVisibleItemPosition();
+        int lastIndex = manager.findLastVisibleItemPosition();
         Log.d("@", "first index : " + firstIndex);
+
+        if(firstIndex == 0 || lastIndex == getAdapter().getItemCount() - 1){
+            getParent().requestDisallowInterceptTouchEvent(true);
+        }
 
         int index = e.getActionIndex();
         int action = e.getActionMasked();
