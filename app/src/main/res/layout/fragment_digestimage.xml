@@ -11,9 +11,32 @@
             android:layout_height="match_parent"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-    <com.tongji.wangjimin.tongjinews.view.FlipRecyclerView
-        android:id="@+id/fliprecyclerview"
+
+    <FrameLayout
+        android:id="@+id/fliplayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone">
+        <com.tongji.wangjimin.tongjinews.view.FlipRecyclerView
+            android:id="@+id/fliprecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/back_image"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_keyboard_backspace_white_24dp"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:layout_height="24dp" />
+        <TextView
+            android:id="@+id/image_index"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="30dp"
+            android:layout_gravity="bottom"
+            android:gravity="center"/>
+
+    </FrameLayout>
+
 </FrameLayout>

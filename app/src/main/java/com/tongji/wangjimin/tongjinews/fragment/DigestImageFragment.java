@@ -6,20 +6,22 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.tongji.wangjimin.tongjinews.ImportNewsActivity;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.DigestImageAdapter;
+import com.tongji.wangjimin.tongjinews.adapter.FlipAdapter;
 import com.tongji.wangjimin.tongjinews.data.ImportNewsLoaderWithCache;
 import com.tongji.wangjimin.tongjinews.net.News;
-import com.tongji.wangjimin.tongjinews.test.TestAdapter;
 import com.tongji.wangjimin.tongjinews.view.FlipRecyclerView;
 import com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView;
 
@@ -58,10 +60,14 @@ public class DigestImageFragment extends Fragment {
     private SwipeRefreshLayout mSwipeLayout;
     private RefreshRecyclerView mRecyclerView;
     private FlipRecyclerView mFlipRecyclerView;
+    private FlipAdapter mFlipAdapter;
     private RecvHandler mHandler;
     private List<News> mNewsList;
     private ImportNewsLoaderWithCache mDataLoader;
     private boolean isFirstVisibile;
+    private FrameLayout mFlipLayout;
+    private ImageView mBack;
+    private TextView mImageIndex;
     private DigestImageAdapter mAdapter;
 
     @Override
@@ -81,28 +87,45 @@ public class DigestImageFragment extends Fragment {
             mDataLoader.loadRefresh(null);
             mHandler.sendEmptyMessage(2);
         }).start());
+        mFlipLayout = (FrameLayout)root.findViewById(R.id.fliplayout);
+        mBack = (ImageView)root.findViewById(R.id.back_image);
+        mImageIndex = (TextView)root.findViewById(R.id.image_index);
+        mFlipAdapter = new FlipAdapter(getContext());
         mRecyclerView = (RefreshRecyclerView)root.findViewById(R.id.recyclerview_digestimage);
+        mFlipRecyclerView = (FlipRecyclerView)root.findViewById(R.id.fliprecyclerview);
+        mFlipRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        mFlipRecyclerView.setAdapter(mFlipAdapter);
+        mFlipRecyclerView.setFlipListener((dir) -> {
+            String index = mFlipRecyclerView.getCurrentPage() + 1 + "/" + mFlipAdapter.getItemCount();
+            mImageIndex.setText(index);
+        });
         mAdapter = new DigestImageAdapter(getContext());
         mAdapter.setItemClickListener((v, pos) -> {
-            mFlipRecyclerView.setVisibility(View.VISIBLE);
+            mFlipAdapter.setData(mAdapter.getDataSet().get(pos));
+            mImageIndex.setText("1/" + mFlipAdapter.getItemCount());
+            mFlipLayout.setVisibility(View.VISIBLE);
             ((ImportNewsActivity)getActivity()).collapseToolbar();
         });
+        mBack.setOnClickListener(v -> mFlipLayout.setVisibility(View.GONE));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecyclerView.setRefreshWork(() -> {
             mSwipeLayout.setRefreshing(true);
-            new Thread(() -> mDataLoader.loadWithNet(newsList -> {
-                mNewsList = newsList;
-                mHandler.sendEmptyMessage(1);
-                mRecyclerView.setLoadingDone();
-            }, false)).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mDataLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
+                        @Override
+                        public void loadDone(List<News> newsList) {
+                            mNewsList = newsList;
+                            mHandler.sendEmptyMessage(1);
+                            mRecyclerView.setLoadingDone();
+                        }
+                    }, false);
+                }
+            }).start();
         });
-        mFlipRecyclerView = (FlipRecyclerView)root.findViewById(R.id.fliprecyclerview);
-        mFlipRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));
-        mFlipRecyclerView.setAdapter(new TestAdapter(getContext()));
-        mFlipRecyclerView.addItemDecoration(new DividerItemDecoration(getContext()
-                , DividerItemDecoration.HORIZONTAL));
         return root;
     }
 

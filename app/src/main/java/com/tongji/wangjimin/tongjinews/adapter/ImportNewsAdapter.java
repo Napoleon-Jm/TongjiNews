@@ -56,12 +56,10 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context mContext;
     private List<News> mData;
     private ClickListener mListener;
-    private boolean mIsLoading;
 
     public ImportNewsAdapter(Context context){
         mContext = context;
         mData = NewsApplication.getInstance().getNewsList();
-        mIsLoading = false;
     }
 
     @Override

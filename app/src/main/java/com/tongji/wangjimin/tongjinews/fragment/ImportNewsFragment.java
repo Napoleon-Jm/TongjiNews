@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.ImportNewsAdapter;
 import com.tongji.wangjimin.tongjinews.data.ImportNewsLoaderWithCache;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
-import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
 import com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView;
 
@@ -115,10 +113,13 @@ public class ImportNewsFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        mNewsListLoader.loadWithNet(newsList -> {
-                            mNewsList = newsList;
-                            mHandler.sendEmptyMessage(1);
-                            mRecyclerView.setLoadingDone();
+                        mNewsListLoader.loadWithNet(new ImportNewsLoaderWithCache.ILoadingWithCacheDone() {
+                            @Override
+                            public void loadDone(List<News> newsList) {
+                                mNewsList = newsList;
+                                mHandler.sendEmptyMessage(1);
+                                mRecyclerView.setLoadingDone();
+                            }
                         }, false);
                     }
                 }).start();

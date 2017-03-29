@@ -1,5 +1,6 @@
 package com.tongji.wangjimin.tongjinews.view;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Point;
@@ -14,9 +15,6 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.TextView;
-
-import com.tongji.wangjimin.tongjinews.R;
 
 /**
  * Created by wangjimin on 17/3/28.
@@ -29,8 +27,10 @@ public class FlipRecyclerView extends RecyclerView {
     private int mPre;
     private boolean mIsFirstMove;
     private int mOrientation;
+    private int mCurrentPage;
     private Point mVelocity;
     private VelocityTracker mVelocityTracker;
+    private FlipListener mListener;
 
     public FlipRecyclerView(Context context) {
         this(context, null);
@@ -46,6 +46,7 @@ public class FlipRecyclerView extends RecyclerView {
         mPre = 0;
         mMoved = 0;
         mIsFirstMove = true;
+        mCurrentPage = 0;
 
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -118,7 +119,7 @@ public class FlipRecyclerView extends RecyclerView {
                 Log.d("wjm", textView.getText().toString());
                 */
                 View v = manager.getChildAt(0);
-                Log.d("@", "up v ? " + ((TextView)v.findViewById(R.id.test_textview_item)).getText());
+//                Log.d("@", "up v ? " + ((TextView)v.findViewById(R.id.test_textview_item)).getText());
                 int flag = getMovePos(e) - mPre;
                 Log.d("@", mPre + " " + e.getRawY());
                 Log.d("@", "up velocity is " + mVelocity.y + "/n " +
@@ -126,27 +127,32 @@ public class FlipRecyclerView extends RecyclerView {
 
                 int itemEdge = getItemEdge(v);
                 int itemBound = getItemBound(v);
-                /* down */
-                if(flag < 0){
-                    if(itemEdge < itemBound*0.66f){
-                        /* 当 index 的item 已经在屏幕中能看到时，这个方法失效
-                         smoothScrollToPosition(0);
-                         smoothScrollBy(0, v.getBottom());
-                        */
-                        // This is work, but don't smooth.
-                        //scrollBy(0, v.getBottom());
+                // 防止只有一个 item 的情况也会满足 flag 中的一个条件。
+                if(itemEdge != itemBound){
+                    /* down */
+                    if(flag < 0){
                         Log.d("@", "down right");
-                        performAni(itemEdge);
+                        if(itemEdge < itemBound*0.66f){
+                            /* 当 index 的item 已经在屏幕中能看到时，这个方法失效
+                             smoothScrollToPosition(0);
+                             smoothScrollBy(0, v.getBottom());
+                            */
+                            // This is work, but don't smooth.
+                            //scrollBy(0, v.getBottom());
+                            performAni(itemEdge, 1);
+                            mCurrentPage++;
+                        } else {
+                            performAni(itemEdge - itemBound, 0);
+                        }
                     } else {
-                        performAni(itemEdge - itemBound);
-                    }
-                } else {
-                    /* up */
-                    Log.d("@", itemEdge + " " + itemBound*0.33f);
-                    if(itemEdge > itemBound*0.33f){
-                        performAni(itemEdge - itemBound);
-                    } else {
-                        performAni(itemEdge);
+                        /* up */
+                        Log.d("@", itemEdge + " " + itemBound*0.33f);
+                        if(itemEdge > itemBound*0.33f){
+                            performAni(itemEdge - itemBound, -1);
+                            mCurrentPage--;
+                        } else {
+                            performAni(itemEdge, 0);
+                        }
                     }
                 }
                 mVelocity.set(0, 0);
@@ -166,7 +172,7 @@ public class FlipRecyclerView extends RecyclerView {
         return false;
     }
 
-    private void performAni(int pos){
+    private void performAni(int pos, int dir){
         ValueAnimator ani = ValueAnimator.ofInt(pos);
         ani.setDuration(200);
         ani.setInterpolator(new DecelerateInterpolator());
@@ -176,6 +182,29 @@ public class FlipRecyclerView extends RecyclerView {
             //FlipRecyclerView.this.scrollBy(0, newPos - mMoved);
             autoScrollBy(newPos - mMoved);
             mMoved = newPos;
+        });
+        ani.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(mListener != null && dir != 0){
+                    mListener.flipFinish(dir);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
         });
         ani.start();
     }
@@ -201,5 +230,17 @@ public class FlipRecyclerView extends RecyclerView {
     private int getItemBound(View v){
         return mOrientation == LinearLayoutManager.VERTICAL? v.getHeight():
                 v.getWidth();
+    }
+
+    public int getCurrentPage(){
+        return mCurrentPage;
+    }
+
+    public void setFlipListener(FlipListener listener){
+        mListener = listener;
+    }
+
+    public interface FlipListener{
+        void flipFinish(int dir);
     }
 }
