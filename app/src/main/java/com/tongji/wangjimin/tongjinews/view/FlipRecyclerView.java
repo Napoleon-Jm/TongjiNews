@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class FlipRecyclerView extends RecyclerView {
     private int mMoved;
     private int mPre;
     private boolean mIsFirstMove;
+    private int mOrientation;
     private Point mVelocity;
     private VelocityTracker mVelocityTracker;
 
@@ -44,6 +46,16 @@ public class FlipRecyclerView extends RecyclerView {
         mPre = 0;
         mMoved = 0;
         mIsFirstMove = true;
+
+        getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                getViewTreeObserver().removeOnPreDrawListener(this);
+                mOrientation = ((LinearLayoutManager)FlipRecyclerView.this.getLayoutManager())
+                        .getOrientation();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -75,7 +87,7 @@ public class FlipRecyclerView extends RecyclerView {
                 mVelocity.y = (int)VelocityTrackerCompat.getYVelocity(
                         mVelocityTracker, pointerId);
                 if(mIsFirstMove){
-                    mPre = (int)e.getRawY();
+                    mPre = getMovePos(e);
                     mIsFirstMove = false;
                 }
                 break;
@@ -90,30 +102,34 @@ public class FlipRecyclerView extends RecyclerView {
                 */
                 View v = manager.getChildAt(0);
                 Log.d("@", "up v ? " + ((TextView)v.findViewById(R.id.test_textview_item)).getText());
-                int flag = (int)e.getRawY() - mPre;
+                int flag = getMovePos(e) - mPre;
                 Log.d("@", mPre + " " + e.getRawY());
                 Log.d("@", "up velocity is " + mVelocity.y + "/n " +
                         "flag is " + flag);
+
+                int itemEdge = getItemEdge(v);
+                int itemBound = getItemBound(v);
                 /* down */
                 if(flag < 0){
-                    if(v.getBottom() < v.getHeight()*0.66f){
+                    if(itemEdge < itemBound*0.66f){
                         /* 当 index 的item 已经在屏幕中能看到时，这个方法失效
                          smoothScrollToPosition(0);
                          smoothScrollBy(0, v.getBottom());
                         */
                         // This is work, but don't smooth.
-    //                    scrollBy(0, v.getBottom());
-                        performAni(v.getBottom());
+                        //scrollBy(0, v.getBottom());
+                        Log.d("@", "down right");
+                        performAni(itemEdge);
                     } else {
-                        performAni(v.getBottom() - v.getHeight());
+                        performAni(itemEdge - itemBound);
                     }
                 } else {
                     /* up */
-                    Log.d("@", v.getBottom() + " " + v.getHeight()*0.33f);
-                    if(v.getBottom() > v.getHeight()*0.33f){
-                        performAni(v.getBottom() - v.getHeight());
+                    Log.d("@", itemEdge + " " + itemBound*0.33f);
+                    if(itemEdge > itemBound*0.33f){
+                        performAni(itemEdge - itemBound);
                     } else {
-                        performAni(v.getBottom());
+                        performAni(itemEdge);
                     }
                 }
                 mVelocity.set(0, 0);
@@ -129,7 +145,7 @@ public class FlipRecyclerView extends RecyclerView {
     // 防止 RecyclerView 快速滑动。
     @Override
     public boolean fling(int velocityX, int velocityY) {
-//        return super.fling(velocityX, velocityY);
+        //return super.fling(velocityX, velocityY);
         return false;
     }
 
@@ -140,9 +156,33 @@ public class FlipRecyclerView extends RecyclerView {
         mMoved = 0;
         ani.addUpdateListener(animation -> {
             int newPos = (int)animation.getAnimatedValue();
-            FlipRecyclerView.this.scrollBy(0, newPos - mMoved);
+            //FlipRecyclerView.this.scrollBy(0, newPos - mMoved);
+            autoScrollBy(newPos - mMoved);
             mMoved = newPos;
         });
         ani.start();
+    }
+
+    private void autoScrollBy(int offset){
+        if(mOrientation == LinearLayoutManager.VERTICAL){
+            this.scrollBy(0, offset);
+        }else {
+            this.scrollBy(offset, 0);
+        }
+    }
+
+    private int getMovePos(MotionEvent e){
+        return (int)(mOrientation == LinearLayoutManager.VERTICAL? e.getRawY():
+                e.getRawX());
+    }
+
+    private int getItemEdge(View v){
+        return mOrientation == LinearLayoutManager.VERTICAL? v.getBottom():
+                v.getRight();
+    }
+
+    private int getItemBound(View v){
+        return mOrientation == LinearLayoutManager.VERTICAL? v.getHeight():
+                v.getWidth();
     }
 }

@@ -19,8 +19,8 @@ public class TestActivity extends AppCompatActivity {
 
         mRecyclerView = (FlipRecyclerView)findViewById(R.id.fliprecyclerview);
         TestAdapter adapter = new TestAdapter(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
     }
 }
