@@ -6,9 +6,16 @@
     android:layout_height="match_parent"
     tools:context="com.tongji.wangjimin.tongjinews.test.TestActivity">
 
-    <com.tongji.wangjimin.tongjinews.view.FlipRecyclerView
-        android:id="@+id/fliprecyclerview"
+    <!--<com.tongji.wangjimin.tongjinews.view.FlipRecyclerView-->
+        <!--android:id="@+id/fliprecyclerview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+
+    <com.tongji.wangjimin.tongjinews.view.ScalePictureView
+        android:id="@+id/scale_pic"
+        android:scaleType="centerInside"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:src="@drawable/md_headerimage"/>
 
 </FrameLayout>
