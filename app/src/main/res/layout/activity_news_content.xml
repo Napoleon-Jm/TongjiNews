@@ -21,11 +21,12 @@
             android:id="@+id/collapslayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:expandedTitleTextAppearance="@style/CollapsingApp"
-            app:expandedTitleGravity="bottom|start"
+            app:expandedTitleTextAppearance="@style/ExpendApp"
+            app:collapsedTitleTextAppearance="@style/CollapsingApp"
             app:contentScrim="@color/colorPrimary"
             android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:maxLines="3">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,7 +38,7 @@
                 android:id="@+id/content_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ToolbarTheme"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_collapseMode="pin"/>
         </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
