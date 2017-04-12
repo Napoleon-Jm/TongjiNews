@@ -20,7 +20,7 @@ import com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment;
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 import com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar;
 
-public class ImportNewsActivity extends AppCompatActivity {
+public class ImportNewsActivity extends AppCompatActivity implements DigestImageFragment.FlipOnListener{
 
     private AppBarLayout mAppBarLayout;
     private DoubleClickToolbar mToolbar;
@@ -29,6 +29,7 @@ public class ImportNewsActivity extends AppCompatActivity {
     private NavigationView mNav;
     private DrawerLayout mDrawer;
     private MainViewPagerAdapter mAdapter;
+    private boolean mIsFlipOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,5 +118,23 @@ public class ImportNewsActivity extends AppCompatActivity {
                 mDrawer.openDrawer(GravityCompat.START);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mViewPager.getCurrentItem() == 1){
+            if(mIsFlipOn){
+                ((DigestImageFragment)mAdapter.getItem(1)).whenFlipOnBack();
+            } else {
+                mViewPager.setCurrentItem(0);
+            }
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void flipOn(boolean f) {
+        mIsFlipOn = f;
     }
 }

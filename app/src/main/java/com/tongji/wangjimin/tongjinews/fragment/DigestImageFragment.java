@@ -35,22 +35,24 @@ import java.util.List;
 public class DigestImageFragment extends Fragment {
 
     /* No leak memory */
-    private static class RecvHandler extends Handler{
+    private static class RecvHandler extends Handler {
         private WeakReference<DigestImageFragment> wRef;
-        private RecvHandler(DigestImageFragment fragment){
+
+        private RecvHandler(DigestImageFragment fragment) {
             wRef = new WeakReference<>(fragment);
         }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             DigestImageFragment actFragment = wRef.get();
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     break;
                 case 1:
                     actFragment.mAdapter.addAll(actFragment.mNewsList);
                 case 2:
-                    if(actFragment != null){
+                    if (actFragment != null) {
                         actFragment.mSwipeLayout.setRefreshing(false);
                     }
             }
@@ -69,12 +71,14 @@ public class DigestImageFragment extends Fragment {
     private ImageView mBack;
     private TextView mImageIndex;
     private DigestImageAdapter mAdapter;
+    private FlipOnListener mFlipOnListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataLoader = ImportNewsLoaderWithCache.getInstance(getContext());
         mHandler = new RecvHandler(this);
+        mFlipOnListener = (FlipOnListener) getActivity();
     }
 
     @Nullable
@@ -82,17 +86,17 @@ public class DigestImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_digestimage, container, false);
-        mSwipeLayout = (SwipeRefreshLayout)root.findViewById(R.id.swiperefresh_digestimage);
+        mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefresh_digestimage);
         mSwipeLayout.setOnRefreshListener(() -> new Thread(() -> {
             mDataLoader.loadRefresh(null);
             mHandler.sendEmptyMessage(2);
         }).start());
-        mFlipLayout = (FrameLayout)root.findViewById(R.id.fliplayout);
-        mBack = (ImageView)root.findViewById(R.id.back_image);
-        mImageIndex = (TextView)root.findViewById(R.id.image_index);
+        mFlipLayout = (FrameLayout) root.findViewById(R.id.fliplayout);
+        mBack = (ImageView) root.findViewById(R.id.back_image);
+        mImageIndex = (TextView) root.findViewById(R.id.image_index);
         mFlipAdapter = new FlipAdapter(getContext());
-        mRecyclerView = (RefreshRecyclerView)root.findViewById(R.id.recyclerview_digestimage);
-        mFlipRecyclerView = (FlipRecyclerView)root.findViewById(R.id.fliprecyclerview);
+        mRecyclerView = (RefreshRecyclerView) root.findViewById(R.id.recyclerview_digestimage);
+        mFlipRecyclerView = (FlipRecyclerView) root.findViewById(R.id.fliprecyclerview);
         mFlipRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         mFlipRecyclerView.setAdapter(mFlipAdapter);
@@ -105,9 +109,14 @@ public class DigestImageFragment extends Fragment {
             mFlipAdapter.setData(mAdapter.getDataSet().get(pos));
             mImageIndex.setText("1/" + mFlipAdapter.getItemCount());
             mFlipLayout.setVisibility(View.VISIBLE);
-            ((ImportNewsActivity)getActivity()).collapseToolbar();
+            ((ImportNewsActivity) getActivity()).collapseToolbar();
+            if (mFlipOnListener != null) {
+                mFlipOnListener.flipOn(true);
+            }
         });
-        mBack.setOnClickListener(v -> mFlipLayout.setVisibility(View.GONE));
+        mBack.setOnClickListener(v -> {
+            whenFlipOnBack();
+        });
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecyclerView.setRefreshWork(() -> {
@@ -132,7 +141,7 @@ public class DigestImageFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(getUserVisibleHint() && isFirstVisibile){
+        if (getUserVisibleHint() && isFirstVisibile) {
             loadData();
             isFirstVisibile = false;
         }
@@ -142,8 +151,19 @@ public class DigestImageFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void reloadData(){
+    public void reloadData() {
         Log.d("wjm", "reload " + mAdapter.getItemCount());
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void whenFlipOnBack() {
+        mFlipLayout.setVisibility(View.GONE);
+        if (mFlipOnListener != null) {
+            mFlipOnListener.flipOn(false);
+        }
+    }
+
+    public interface FlipOnListener{
+        void flipOn(boolean f);
     }
 }
