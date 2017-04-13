@@ -13,7 +13,7 @@
     <!-- fitSystemWindows = true -->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:fitsSystemWindows="true">
 
     <!-- fitSystemWindows = true -->
@@ -66,6 +66,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:clipToPadding="false"
         android:clipChildren="false"
         android:paddingBottom="55dp"/>
