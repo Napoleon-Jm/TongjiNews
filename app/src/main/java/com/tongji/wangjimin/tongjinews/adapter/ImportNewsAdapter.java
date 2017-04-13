@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tongji.wangjimin.tongjinews.NewsApplication;
@@ -32,17 +34,25 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView date;
         private TextView readNum;
         private SimpleDraweeView image;
+        private ImageView fav;
         private ViewHolder(View itemView) {
             super(itemView);
             title = (TextView)itemView.findViewById(R.id.item_title);
             readNum = (TextView)itemView.findViewById(R.id.item_readnum);
             date = (TextView)itemView.findViewById(R.id.item_date);
             image = (SimpleDraweeView)itemView.findViewById(R.id.item_image);
+            fav = (ImageView)itemView.findViewById(R.id.item_fav);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(mListener != null)
                         mListener.onClick(getAdapterPosition());
+                }
+            });
+            fav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "favorites in importnews.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
