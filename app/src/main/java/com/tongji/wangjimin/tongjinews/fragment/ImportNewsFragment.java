@@ -69,15 +69,11 @@ public class ImportNewsFragment extends Fragment {
     private List<News> mNewsList;
     private boolean isFristVisiable = true;
     private NewsReaderDbHelper mDbHelper;
-    private SQLiteDatabase mDb;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNewsListLoader = ImportNewsLoaderWithCache.getInstance(getContext());
         mAdapter = new ImportNewsAdapter(getContext());
-        mDbHelper = new NewsReaderDbHelper(getContext());
-        //todo Background?
-        mDb = mDbHelper.getWritableDatabase();
     }
 
     @Nullable
