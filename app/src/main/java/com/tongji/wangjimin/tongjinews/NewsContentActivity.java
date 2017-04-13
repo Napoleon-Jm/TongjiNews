@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -100,7 +99,6 @@ public class NewsContentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         News newsInfo = intent.getParcelableExtra("newsinfo");
         mCollapsLayout.setTitle(newsInfo.getTitle());
-        Log.d("wjm", newsInfo.getTitle());
         /*
          * Why also remind me worker thread annotation.
          */

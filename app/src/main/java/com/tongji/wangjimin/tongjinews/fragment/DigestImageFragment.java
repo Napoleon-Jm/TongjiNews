@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,12 @@ import com.tongji.wangjimin.tongjinews.view.FlipRecyclerView;
 import com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.text.MessageFormat;
 import java.util.List;
 
 /**
  * Created by wangjimin on 17/3/17.
+ * DigestImageFragment.
  */
 
 public class DigestImageFragment extends Fragment {
@@ -102,7 +103,6 @@ public class DigestImageFragment extends Fragment {
         mFlipRecyclerView.setAdapter(mFlipAdapter);
         mFlipRecyclerView.setFlipListener((cur ,dir) -> {
             String index = cur + 1 + "/" + mFlipAdapter.getItemCount();
-            Log.d("@", cur + "cur dir" + dir);
             mImageIndex.setText(index);
         });
         mAdapter = new DigestImageAdapter(getContext());
@@ -110,7 +110,7 @@ public class DigestImageFragment extends Fragment {
             mFlipLayout.setVisibility(View.VISIBLE);
             mFlipRecyclerView.reload();
             mFlipAdapter.setData(mAdapter.getDataSet().get(pos));
-            mImageIndex.setText("1/" + mFlipAdapter.getItemCount());
+            mImageIndex.setText(MessageFormat.format("1/{0}", mFlipAdapter.getItemCount()));
             ((ImportNewsActivity) getActivity()).collapseToolbar();
             if (mFlipOnListener != null) {
                 mFlipOnListener.flipOn(true);
@@ -154,7 +154,6 @@ public class DigestImageFragment extends Fragment {
     }
 
     public void reloadData() {
-        Log.d("wjm", "reload " + mAdapter.getItemCount());
         mAdapter.notifyDataSetChanged();
     }
 

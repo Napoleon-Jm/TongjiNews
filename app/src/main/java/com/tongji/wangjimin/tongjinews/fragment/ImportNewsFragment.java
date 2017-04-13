@@ -183,7 +183,6 @@ public class ImportNewsFragment extends Fragment {
     }
 
     public void reloadData(){
-        Log.d("wjm", "reload " + mAdapter.getItemCount());
         mAdapter.notifyDataSetChanged();
     }
 

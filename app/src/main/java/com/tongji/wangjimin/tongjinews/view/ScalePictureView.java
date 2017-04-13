@@ -57,23 +57,23 @@ public class ScalePictureView extends AppCompatImageView {
                 m.set(ScalePictureView.this.getImageMatrix());
                 RectF r = new RectF();
                 m.mapRect(r);
-                Log.d("@", "test " + r.left + " " + r.top);
+//                Log.d("@", "test " + r.left + " " + r.top);
 
-                Log.d("@", "ImageView size " + getWidth() + " " + getHeight());
+//                Log.d("@", "ImageView size " + getWidth() + " " + getHeight());
 
                 float[] v = new float[9];
                 m.getValues(v);
-                Log.d("@", "Matrix: \n" +
-                        v[0] + " \t" + v[1] + " \t" + v[2] + "\n" +
-                        v[3] + " \t" + v[4] + " \t" + v[5] + "\n" +
-                        v[6] + " \t" + v[7] + " \t" + v[8] + "\n" );
+//                Log.d("@", "Matrix: \n" +
+//                        v[0] + " \t" + v[1] + " \t" + v[2] + "\n" +
+//                        v[3] + " \t" + v[4] + " \t" + v[5] + "\n" +
+//                        v[6] + " \t" + v[7] + " \t" + v[8] + "\n" );
 
                 mOriginBpWidth = (int)(getWidth()/v[0]);
                 mOriginBpHeight = (int)(getHeight()/v[4]);
                 ScalePictureView.this.setScaleType(ScaleType.MATRIX);
                 ScalePictureView.this.setDrawingCacheEnabled(true);
                 Bitmap b = Bitmap.createBitmap(ScalePictureView.this.getDrawingCache());
-                Log.d("@", "Bitmap " + b.getWidth() + " " + b.getHeight());
+//                Log.d("@", "Bitmap " + b.getWidth() + " " + b.getHeight());
                 ScalePictureView.this.setDrawingCacheEnabled(false);
 
                 return true;
@@ -106,7 +106,7 @@ public class ScalePictureView extends AppCompatImageView {
                         if(Math.abs(mEndDis - mStartDis) > 0){
                             float scale = mEndDis/mStartDis;
                             PointF mid = getMidPoint(event);
-                            Log.d("@", "scale " + scale + " mode " + mMode + " endDis " + mEndDis);
+//                            Log.d("@", "scale " + scale + " mode " + mMode + " endDis " + mEndDis);
                             mMatrix.set(mCurrentMatrix);
                             mMatrix.postScale(scale, scale, mid.x, mid.y);
                         }
@@ -132,21 +132,21 @@ public class ScalePictureView extends AppCompatImageView {
         mCurrentMatrix.getValues(v);
         float bpWidth = (mOriginBpWidth * v[0]);
         float bpHeight = (mOriginBpHeight * v[4]);
-        Log.d("@", "current size " + bpWidth + " " + bpHeight);
-        Log.d("@", "origin" + mOrigin.x + " " + mOrigin.y);
+//        Log.d("@", "current size " + bpWidth + " " + bpHeight);
+//        Log.d("@", "origin" + mOrigin.x + " " + mOrigin.y);
         PointF currentCenter = new PointF(v[2] + bpWidth/2.f, v[5] + bpHeight/2.f);
         mMatrix.set(mCurrentMatrix);
-        Log.d("@", "trans params " + (mOrigin.x - currentCenter.x) + " " + (mOrigin.y - currentCenter.y));
+//        Log.d("@", "trans params " + (mOrigin.x - currentCenter.x) + " " + (mOrigin.y - currentCenter.y));
         mMatrix.postTranslate(mOrigin.x - currentCenter.x, mOrigin.y - currentCenter.y);
 //        mMatrix.postTranslate(0, 0);
 
         float[] v1 = new float[9];
         mMatrix.getValues(v1);
-        Log.d("@", "trans " + v[2] + " " + v[5]);
+//        Log.d("@", "trans " + v[2] + " " + v[5]);
 
         ScalePictureView.this.setDrawingCacheEnabled(true);
         Bitmap b = Bitmap.createBitmap(ScalePictureView.this.getDrawingCache());
-        Log.d("@", "Bitmap " + b.getWidth() + " " + b.getHeight());
+//        Log.d("@", "Bitmap " + b.getWidth() + " " + b.getHeight());
         ScalePictureView.this.setDrawingCacheEnabled(false);
 
         this.setImageMatrix(mMatrix);
