@@ -18,12 +18,26 @@ import java.util.List;
 
 public class NewsContent {
     /* could be initialized in constructor. */
-    private final News mNewsInfo;
-    private final List<String> mContent;
+    private News mNewsInfo;
+    private List<String> mContent;
 
     @WorkerThread
     public NewsContent(News newsInfo,Runnable callback){
         mNewsInfo = newsInfo;
+        parseContentFromUrl(newsInfo.getUrl());
+        if(callback != null)
+            callback.run();
+    }
+
+    @WorkerThread
+    public NewsContent(String url, Runnable callback){
+        parseContentFromUrl(url);
+        if(callback != null){
+            callback.run();
+        }
+    }
+
+    private void parseContentFromUrl(String url){
         mContent = new ArrayList<>();
         Document doc = Documenter.loadDoc(mNewsInfo.getUrl());
         Elements es = doc.select(".news_content");
@@ -40,8 +54,6 @@ public class NewsContent {
                 mContent.add(contents.text());
             }
         }
-        if(callback != null)
-            callback.run();
     }
 
     public News getNewsInfo() {
