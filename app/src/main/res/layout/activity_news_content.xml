@@ -13,7 +13,7 @@
     <!-- fitSystemWindows = true -->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:fitsSystemWindows="true">
 
     <!-- fitSystemWindows = true -->
@@ -28,12 +28,28 @@
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:maxLines="3">
-            <ImageView
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/header"
-                android:src="@drawable/md_headerimage"/>
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/header"
+                    android:src="@drawable/md_headerimage"/>
+                <ImageView
+                    android:id="@+id/newcontent_fav"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_favorite_border_white_24dp"
+                    android:contentDescription="@string/favorites" />
+            </FrameLayout>
+
             <!-- 将高度增加到80dp（56 + 24），防止Toolbar 显示到 StatusBar 下面 -->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/content_toolbar"
