@@ -108,7 +108,6 @@ public class DigestImageFragment extends Fragment {
         mAdapter = new DigestImageAdapter(getContext());
         mAdapter.setItemClickListener((v, pos) -> {
             mFlipLayout.setVisibility(View.VISIBLE);
-            mFlipRecyclerView.reload();
             mFlipAdapter.setData(mAdapter.getDataSet().get(pos));
             mImageIndex.setText(MessageFormat.format("1/{0}", mFlipAdapter.getItemCount()));
             ((ImportNewsActivity) getActivity()).collapseToolbar();
@@ -158,7 +157,10 @@ public class DigestImageFragment extends Fragment {
     }
 
     public void whenFlipOnBack() {
-        mFlipLayout.setVisibility(View.GONE);
+        // TODO, 只有当 FlipRecyclerView 滑动回第一个时，ViewPager 才正常反应，
+        // 当 View.GONE 时，即使 reload ViewPager 也不正常作用，原因有待纠察。
+        mFlipRecyclerView.reload();
+        mFlipLayout.setVisibility(View.INVISIBLE);
         if (mFlipOnListener != null) {
             mFlipOnListener.flipOn(false);
         }
