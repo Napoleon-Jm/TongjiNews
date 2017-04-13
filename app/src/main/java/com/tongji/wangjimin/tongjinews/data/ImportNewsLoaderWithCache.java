@@ -1,15 +1,11 @@
 package com.tongji.wangjimin.tongjinews.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.tongji.wangjimin.tongjinews.net.ImportNewsListLoader;
 import com.tongji.wangjimin.tongjinews.net.News;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,36 +50,13 @@ public class ImportNewsLoaderWithCache {
         Cursor c =  db.query(TABLE_NAME, null, null, null, null, null, COLUMN_NAME_DATE + " DESC", null);
         if(c.getCount() < 1)
             return null;
-        List<News> news = new ArrayList<>();
-        int index = -1;
-        String title = null;
-        String date = null;
-        String url = null;
-        String readNum = null;
-        List<String> images = null;
+        List<News> newsList = new ArrayList<>();
         while(c.moveToNext()){
-            index = c.getColumnIndex(COLUMN_NAME_TITLE);
-            title = c.getString(index);
-            index = c.getColumnIndex(COLUMN_NAME_DATE);
-            date = c.getString(index);
-            index = c.getColumnIndex(COLUMN_NAME_READNUM);
-            readNum = c.getString(index);
-            index = c.getColumnIndex(COLUMN_NAME_URL);
-            url = c.getString(index);
-            index = c.getColumnIndex(COLUMN_NAME_IMAGES);
-            try {
-                images = new ArrayList<>();
-                JSONArray array = new JSONArray(c.getString(index));
-                for(int i = 0;i < array.length();i++){
-                    images.add(array.getString(i));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            news.add(new News(title, date, readNum, url, images));
+            News news = mDbHelper.cursorToNews(c);
+            newsList.add(news);
         }
         c.close();
-        return news;
+        return newsList;
     }
 
     public void loadWithNet(ILoadingWithCacheDone callback, boolean cache){
@@ -96,13 +69,7 @@ public class ImportNewsLoaderWithCache {
                     SQLiteDatabase db = mDbHelper.getWritableDatabase();
                     db.delete(TABLE_NAME, null, null);
                     for(News news : newsList){
-                        ContentValues values = new ContentValues();
-                        values.put(COLUMN_NAME_TITLE, news.getTitle());
-                        values.put(COLUMN_NAME_DATE, news.getDate());
-                        values.put(COLUMN_NAME_URL, news.getUrl());
-                        values.put(COLUMN_NAME_READNUM, news.getReadNum());
-                        values.put(COLUMN_NAME_IMAGES, new JSONArray(news.getImages()).toString());
-                        db.insert(TABLE_NAME, null, values);
+                        mDbHelper.insertNews(db, TABLE_NAME, news);
                     }
                 }
 

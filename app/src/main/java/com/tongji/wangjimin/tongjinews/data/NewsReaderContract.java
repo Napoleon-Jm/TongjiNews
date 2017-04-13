@@ -14,6 +14,7 @@ public class NewsReaderContract {
 
     public static class NewsEntry implements BaseColumns{
         public static final String TABLE_NAME = "entry";
+        public static final String TABLE_FAV_NAME = "favorites";
         public static final String COLUMN_NAME_TITLE = "title";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_READNUM = "readnum";
