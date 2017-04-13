@@ -50,7 +50,16 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_FAV_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsReaderContract.NewsEntry.TABLE_FAV_NAME;
 
-    public NewsReaderDbHelper(Context context){
+    private static NewsReaderDbHelper instance;
+
+    public static NewsReaderDbHelper getInstance(Context context){
+        if(instance == null){
+            instance = new NewsReaderDbHelper(context);
+        }
+        return instance;
+    }
+
+    private NewsReaderDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

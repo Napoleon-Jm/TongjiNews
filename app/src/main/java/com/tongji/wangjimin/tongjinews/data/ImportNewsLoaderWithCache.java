@@ -30,7 +30,7 @@ public class ImportNewsLoaderWithCache {
 
     private ImportNewsLoaderWithCache(Context context){
         mNetLoader = ImportNewsListLoader.getInstance();
-        mDbHelper = new NewsReaderDbHelper(context);
+        mDbHelper = NewsReaderDbHelper.getInstance(context);
     }
 
     public static ImportNewsLoaderWithCache getInstance(Context context){
