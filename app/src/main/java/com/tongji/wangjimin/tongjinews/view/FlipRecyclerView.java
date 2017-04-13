@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Point;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,7 +77,7 @@ public class FlipRecyclerView extends RecyclerView {
         LinearLayoutManager manager = (LinearLayoutManager)this.getLayoutManager();
         int firstIndex = manager.findFirstVisibleItemPosition();
         int lastIndex = manager.findLastVisibleItemPosition();
-        Log.d("@", "first index : " + firstIndex);
+//        Log.d("@", "first index : " + firstIndex);
 
         if(firstIndex == 0 || lastIndex == getAdapter().getItemCount() - 1){
             getParent().requestDisallowInterceptTouchEvent(true);
@@ -93,11 +94,11 @@ public class FlipRecyclerView extends RecyclerView {
         }
         switch(action){
             case MotionEvent.ACTION_DOWN:
-                Log.d("@", "down");
+//                Log.d("@", "down");
                 mVelocityTracker.addMovement(e);
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.d("@", "move");
+//                Log.d("@", "move");
                 mVelocityTracker.addMovement(e);
                 mVelocityTracker.computeCurrentVelocity(1000);
                 mVelocity.x = (int)VelocityTrackerCompat.getXVelocity(
@@ -110,7 +111,7 @@ public class FlipRecyclerView extends RecyclerView {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d("@", "up");
+//                Log.d("@", "up");
                 /*
                 * 在 RecyclerView 中，manager.getChildAt 中的 index 并不是 adapter 中的 index，而是
                 * 视野中的子 View index。
@@ -121,9 +122,9 @@ public class FlipRecyclerView extends RecyclerView {
                 View v = manager.getChildAt(0);
 //                Log.d("@", "up v ? " + ((TextView)v.findViewById(R.id.test_textview_item)).getText());
                 int flag = getMovePos(e) - mPre;
-                Log.d("@", mPre + " " + e.getRawY());
-                Log.d("@", "up velocity is " + mVelocity.y + "/n " +
-                        "flag is " + flag);
+//                Log.d("@", mPre + " " + e.getRawY());
+//                Log.d("@", "up velocity is " + mVelocity.y + "/n " +
+//                        "flag is " + flag);
 
                 int itemEdge = getItemEdge(v);
                 int itemBound = getItemBound(v);
@@ -131,7 +132,7 @@ public class FlipRecyclerView extends RecyclerView {
                 if(itemEdge != itemBound){
                     /* down */
                     if(flag < 0){
-                        Log.d("@", "down right");
+//                        Log.d("@", "down right");
                         if(itemEdge < itemBound*0.66f){
                             /* 当 index 的item 已经在屏幕中能看到时，这个方法失效
                              smoothScrollToPosition(0);
@@ -139,17 +140,17 @@ public class FlipRecyclerView extends RecyclerView {
                             */
                             // This is work, but don't smooth.
                             //scrollBy(0, v.getBottom());
-                            performAni(itemEdge, 1);
                             mCurrentPage++;
+                            performAni(itemEdge, 1);
                         } else {
                             performAni(itemEdge - itemBound, 0);
                         }
                     } else {
                         /* up */
-                        Log.d("@", itemEdge + " " + itemBound*0.33f);
+//                        Log.d("@", itemEdge + " " + itemBound*0.33f);
                         if(itemEdge > itemBound*0.33f){
-                            performAni(itemEdge - itemBound, -1);
                             mCurrentPage--;
+                            performAni(itemEdge - itemBound, -1);
                         } else {
                             performAni(itemEdge, 0);
                         }
@@ -192,7 +193,7 @@ public class FlipRecyclerView extends RecyclerView {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if(mListener != null && dir != 0){
-                    mListener.flipFinish(dir);
+                    mListener.flipFinish(getCurrentPage() ,dir);
                 }
             }
 
@@ -240,7 +241,12 @@ public class FlipRecyclerView extends RecyclerView {
         mListener = listener;
     }
 
+    public void reload(){
+        mCurrentPage = 0;
+        scrollToPosition(0);
+    }
+
     public interface FlipListener{
-        void flipFinish(int dir);
+        void flipFinish(int cur, int dir);
     }
 }

@@ -100,15 +100,17 @@ public class DigestImageFragment extends Fragment {
         mFlipRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         mFlipRecyclerView.setAdapter(mFlipAdapter);
-        mFlipRecyclerView.setFlipListener((dir) -> {
-            String index = mFlipRecyclerView.getCurrentPage() + 1 + "/" + mFlipAdapter.getItemCount();
+        mFlipRecyclerView.setFlipListener((cur ,dir) -> {
+            String index = cur + 1 + "/" + mFlipAdapter.getItemCount();
+            Log.d("@", cur + "cur dir" + dir);
             mImageIndex.setText(index);
         });
         mAdapter = new DigestImageAdapter(getContext());
         mAdapter.setItemClickListener((v, pos) -> {
+            mFlipLayout.setVisibility(View.VISIBLE);
+            mFlipRecyclerView.reload();
             mFlipAdapter.setData(mAdapter.getDataSet().get(pos));
             mImageIndex.setText("1/" + mFlipAdapter.getItemCount());
-            mFlipLayout.setVisibility(View.VISIBLE);
             ((ImportNewsActivity) getActivity()).collapseToolbar();
             if (mFlipOnListener != null) {
                 mFlipOnListener.flipOn(true);
