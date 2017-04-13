@@ -9,6 +9,8 @@
     <color name="green_opc">#cc05bcba</color>
     <color name="gray_opc">#cccccccc</color>
     <color name="tabTextColor">#b5ebeb</color>
+    <!-- setNavigationBarColor 不支持透明处理 -->
+    <color name="bottom_bav">#00000000</color>
     
     <color name="image_front_hint">#66cccccc</color>
 </resources>
