@@ -54,6 +54,9 @@ public class NewsApplication extends Application {
     }
 
     private void addImage(List<News> newsList){
+        if(newsList == null){
+            return;
+        }
         if(mImageList != null){
             for(News n : newsList){
                 if(n.getImages() != null && n.getImages().size() > 0){

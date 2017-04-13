@@ -1,16 +1,17 @@
 package com.tongji.wangjimin.tongjinews;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentAdapter;
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentImageAdapter;
+import com.tongji.wangjimin.tongjinews.data.NewsReaderContract;
+import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
 import com.tongji.wangjimin.tongjinews.net.News;
 import com.tongji.wangjimin.tongjinews.net.NewsContent;
 import com.tongji.wangjimin.tongjinews.net.util.Utils;
@@ -104,13 +107,32 @@ public class NewsContentActivity extends AppCompatActivity {
         mFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mFavorites.setImageDrawable(null);
-                Toast.makeText(NewsContentActivity.this, "favorites", Toast.LENGTH_SHORT).show();
+                NewsReaderDbHelper dbHelper = NewsReaderDbHelper
+                        .getInstance(NewsContentActivity.this);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                if(!dbHelper.isExist(db, NewsReaderContract.NewsEntry.TABLE_FAV_NAME,
+                        mNewsInfo, NewsReaderDbHelper.MODE_INSERT)){
+                    mFavorites.setImageDrawable(ResourcesCompat.getDrawable(NewsContentActivity.this.getResources(),
+                            R.drawable.ic_favorite_white_24dp, null));
+                    Toast.makeText(NewsContentActivity.this, "Has been collected.", Toast.LENGTH_SHORT).show();
+                } else {
+                    dbHelper.deleteNews(db, NewsReaderContract.NewsEntry.TABLE_FAV_NAME, mNewsInfo);
+                    mFavorites.setImageDrawable(ResourcesCompat.getDrawable(NewsContentActivity.this.getResources(),
+                            R.drawable.ic_favorite_border_white_24dp, null));
+                    Toast.makeText(NewsContentActivity.this, "Has been remove.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //接收 Activity 传递的对象.
         Intent intent = getIntent();
         mNewsInfo = intent.getParcelableExtra("newsinfo");
+        NewsReaderDbHelper dbHelper = NewsReaderDbHelper
+                .getInstance(NewsContentActivity.this);
+        if(dbHelper.isExist(dbHelper.getWritableDatabase(), NewsReaderContract.NewsEntry.TABLE_FAV_NAME,
+                mNewsInfo, 0)){
+            mFavorites.setImageDrawable(ResourcesCompat.getDrawable(NewsContentActivity.this.getResources(),
+                    R.drawable.ic_favorite_white_24dp, null));
+        }
         mCollapsLayout.setTitle(mNewsInfo.getTitle());
         /*
          * Why also remind me worker thread annotation.

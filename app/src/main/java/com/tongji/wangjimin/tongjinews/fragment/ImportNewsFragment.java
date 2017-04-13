@@ -1,7 +1,6 @@
 package com.tongji.wangjimin.tongjinews.fragment;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +65,7 @@ public class ImportNewsFragment extends Fragment {
     private ImportNewsLoaderWithCache mNewsListLoader;
     private ImportNewsAdapter mAdapter;
     private List<News> mNewsList;
-    private boolean isFristVisiable = true;
+    private boolean isFirstVisible = true;
     private NewsReaderDbHelper mDbHelper;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,8 +125,8 @@ public class ImportNewsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(getUserVisibleHint() && isFristVisiable){
-            isFristVisiable = false;
+        if(getUserVisibleHint() && isFirstVisible){
+            isFirstVisible = false;
             mSwipeLayout.setRefreshing(true);
             loadData();
         }

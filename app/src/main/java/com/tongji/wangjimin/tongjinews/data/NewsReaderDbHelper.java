@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.tongji.wangjimin.tongjinews.net.News;
 
@@ -19,6 +20,7 @@ import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.
 import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.COLUMN_NAME_READNUM;
 import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.COLUMN_NAME_TITLE;
 import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.COLUMN_NAME_URL;
+import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.TABLE_FAV_NAME;
 import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.TABLE_NAME;
 
 /**
@@ -50,6 +52,10 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_FAV_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsReaderContract.NewsEntry.TABLE_FAV_NAME;
 
+    public static final int MODE_NO_OP = 0;
+    public static final int MODE_INSERT = 1;
+    public static final int MODE_DELETE = 2;
+
     private static NewsReaderDbHelper instance;
 
     public static NewsReaderDbHelper getInstance(Context context){
@@ -79,6 +85,7 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+        Log.d("@", "down grade");
     }
 
     public long insertNews(SQLiteDatabase db ,String tableName, News news){
@@ -89,6 +96,32 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NAME_READNUM, news.getReadNum());
         values.put(COLUMN_NAME_IMAGES, new JSONArray(news.getImages()).toString());
         return db.insert(tableName, null, values);
+    }
+
+    public int deleteNews(SQLiteDatabase db, String tableName, News news){
+        return db.delete(tableName, COLUMN_NAME_URL + "=?", new String[]{news.getUrl()});
+    }
+
+    /**
+     * Insert data if its not exist, when isInsert is true.
+     * @param db database to operation.
+     * @param news data to operation.
+     * @param mode next operation when exist.
+     * @return if data is exist.
+     */
+    public boolean isExist(SQLiteDatabase db ,String tableName ,News news, int mode){
+        Cursor c = db.query(tableName, new String[]{COLUMN_NAME_URL} ,COLUMN_NAME_URL + "=?",
+                new String[]{news.getUrl()}, null, null, null);
+        boolean exist = c.moveToNext();
+        c.close();
+        // if not exist and mode equals to 1, then insert.
+        if(!exist && mode == 1){
+            insertNews(db, tableName, news);
+            // if exist and mode equals to 2, then delete.
+        } else if (exist && mode == 2){
+            deleteNews(db, tableName, news);
+        }
+        return exist;
     }
 
     public News cursorToNews(Cursor c){
