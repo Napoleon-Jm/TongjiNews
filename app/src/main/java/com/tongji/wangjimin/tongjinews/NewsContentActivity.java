@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentAdapter;
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentImageAdapter;
@@ -50,8 +52,10 @@ public class NewsContentActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private ViewPager mViewPager;
+    private ImageView mFavorites;
     private NewsContentAdapter mAdapter;
     private NewsContent mNewsContent;
+    private News mNewsInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,8 @@ public class NewsContentActivity extends AppCompatActivity {
         mCollapsLayout = (CollapsingToolbarLayout)findViewById(R.id.collapslayout);
         mToolbar = (Toolbar)findViewById(R.id.content_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_newcontent);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mViewPager = (ViewPager)findViewById(R.id.newscontent_viewpager);
@@ -95,10 +100,18 @@ public class NewsContentActivity extends AppCompatActivity {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+        mFavorites = (ImageView)findViewById(R.id.newcontent_fav);
+        mFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mFavorites.setImageDrawable(null);
+                Toast.makeText(NewsContentActivity.this, "favorites", Toast.LENGTH_SHORT).show();
+            }
+        });
         //接收 Activity 传递的对象.
         Intent intent = getIntent();
-        News newsInfo = intent.getParcelableExtra("newsinfo");
-        mCollapsLayout.setTitle(newsInfo.getTitle());
+        mNewsInfo = intent.getParcelableExtra("newsinfo");
+        mCollapsLayout.setTitle(mNewsInfo.getTitle());
         /*
          * Why also remind me worker thread annotation.
          */
@@ -110,7 +123,7 @@ public class NewsContentActivity extends AppCompatActivity {
             public void run() {
                 super.run();
                 /* Runnable 如果用 lambda 代替，会提示 lambda 没有实现 Runnable 接口 */
-                mNewsContent = new NewsContent(newsInfo, new Runnable() {
+                mNewsContent = new NewsContent(mNewsInfo, new Runnable() {
                     @Override
                     public void run() {
 
