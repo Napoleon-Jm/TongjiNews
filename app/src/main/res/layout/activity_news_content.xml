@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:clipToPadding="true"
     tools:context="com.tongji.wangjimin.tongjinews.NewsContentActivity">
     <!-- fitSystemWindows = true -->
     <android.support.design.widget.AppBarLayout
@@ -33,11 +34,12 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/header"
                 android:src="@drawable/md_headerimage"/>
-
+            <!-- 将高度增加到80dp（56 + 24），防止Toolbar 显示到 StatusBar 下面 -->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/content_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="80dp"
+                android:paddingTop="24dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:layout_collapseMode="pin"/>
         </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
@@ -47,7 +49,10 @@
         android:id="@+id/recyclerview_newcontent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:paddingBottom="55dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/newscontent_viewpager"

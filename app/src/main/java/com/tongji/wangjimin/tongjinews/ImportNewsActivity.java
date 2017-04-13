@@ -1,6 +1,8 @@
 package com.tongji.wangjimin.tongjinews;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -13,6 +15,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
@@ -34,6 +40,21 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+         * 为了解决系统4.4状态栏沉浸方案，设置状态栏为透明（此时为全屏模式，Toolbar 会显示在 StatusBar 下面），
+         * 所以需要在 content 上面添加一个 view 当做状态栏的着色。
+         */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            //设置透明状态栏
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //设置状态栏颜色，此处代码有待查证。没能很好解决全屏导致的 Toolbar 上移问题。
+            ViewGroup contentLayout = (ViewGroup)findViewById(android.R.id.content);
+            setupStatusBarView(contentLayout, ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+            contentLayout.setFocusableInTouchMode(true);
+//            View contentChild = contentLayout.getChildAt(0);
+//            contentChild.setFitsSystemWindows(true);
+        }
         setContentView(R.layout.activity_import_news);
         /* work */
         mNav = (NavigationView) findViewById(R.id.nav_importnews);
@@ -91,6 +112,19 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                 }
             }
         });
+    }
+
+    private void setupStatusBarView(ViewGroup contentLayout, int color) {
+        View statusBarView = new View(this);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                getStatusBarHeight(this));
+        contentLayout.addView(statusBarView, lp);
+        statusBarView.setBackgroundColor(color);
+    }
+
+    private int getStatusBarHeight(Context context) {
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return context.getResources().getDimensionPixelSize(resourceId);
     }
 
     public void collapseToolbar(){

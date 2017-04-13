@@ -1,6 +1,7 @@
 package com.tongji.wangjimin.tongjinews;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentAdapter;
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentImageAdapter;
@@ -54,6 +58,17 @@ public class NewsContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_content);
+        // 总体效果是，状态栏全透明，导航栏半透明。
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            // 此处是全部透明
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            // 有阴影，半透明
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         /* work */
         mCollapsLayout = (CollapsingToolbarLayout)findViewById(R.id.collapslayout);
         mToolbar = (Toolbar)findViewById(R.id.content_toolbar);

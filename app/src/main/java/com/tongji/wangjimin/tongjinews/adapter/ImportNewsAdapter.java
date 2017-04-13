@@ -38,9 +38,12 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             readNum = (TextView)itemView.findViewById(R.id.item_readnum);
             date = (TextView)itemView.findViewById(R.id.item_date);
             image = (SimpleDraweeView)itemView.findViewById(R.id.item_image);
-            itemView.setOnClickListener(v -> {
-                if(mListener != null)
-                    mListener.onClick(getAdapterPosition());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null)
+                        mListener.onClick(getAdapterPosition());
+                }
             });
         }
     }
