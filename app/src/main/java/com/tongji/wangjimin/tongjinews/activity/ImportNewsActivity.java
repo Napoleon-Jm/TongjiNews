@@ -68,6 +68,7 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                     case R.id.item_fav:
                         Intent intent = new Intent(ImportNewsActivity.this, FavoritesActivity.class);
                         startActivity(intent);
+                        break;
                     case R.id.item_msg:
                     case R.id.item_friend:
                         showMsg("To do, please wait, 3Q.", Toast.LENGTH_SHORT);
