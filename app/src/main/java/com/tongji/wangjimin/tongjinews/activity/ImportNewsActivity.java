@@ -126,7 +126,8 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
     @Override
     protected void onStart() {
         super.onStart();
-
+//        boolean hasNetWork = Utils.isNetworkConnected(this);
+//        Toast.makeText(this, "NetWork: " + hasNetWork, Toast.LENGTH_SHORT).show();
         ((ImportNewsFragment)mAdapter.getItem(MainViewPagerAdapter.IMPORTNEWS_INDEX)).reloadData();
     }
 
