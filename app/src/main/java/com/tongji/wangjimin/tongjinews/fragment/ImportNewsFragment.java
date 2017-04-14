@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tongji.wangjimin.tongjinews.NewsApplication;
-import com.tongji.wangjimin.tongjinews.NewsContentActivity;
+import com.tongji.wangjimin.tongjinews.activity.NewsContentActivity;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.ImportNewsAdapter;
 import com.tongji.wangjimin.tongjinews.data.ImportNewsLoaderWithCache;

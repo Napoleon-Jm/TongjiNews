@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tongji.wangjimin.tongjinews.ImportNewsActivity;
+import com.tongji.wangjimin.tongjinews.activity.ImportNewsActivity;
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.DigestImageAdapter;
 import com.tongji.wangjimin.tongjinews.adapter.FlipAdapter;

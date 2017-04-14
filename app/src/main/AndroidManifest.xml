@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="false"><!-- Android M 引入的自动备份属性，可以上传到 Google Drive -->
         <activity
-            android:name=".NewsContentActivity"
+            android:name=".activity.NewsContentActivity"
             android:theme="@style/NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImportNewsActivity"
+            android:name=".activity.ImportNewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar">
             <intent-filter>
