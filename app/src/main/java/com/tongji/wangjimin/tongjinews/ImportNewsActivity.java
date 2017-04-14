@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
 import com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment;
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
+import com.tongji.wangjimin.tongjinews.utils.Utils;
 import com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar;
 
 public class ImportNewsActivity extends AppCompatActivity implements DigestImageFragment.FlipOnListener{
@@ -50,7 +51,7 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             //设置状态栏颜色，此处代码有待查证。没能很好解决全屏导致的 Toolbar 上移问题。
             ViewGroup contentLayout = (ViewGroup)findViewById(android.R.id.content);
-            setupStatusBarView(contentLayout, ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+            setupStatusBarView(contentLayout, Utils.getColor(this, R.color.colorPrimary));
             contentLayout.setFocusableInTouchMode(true);
 //            View contentChild = contentLayout.getChildAt(0);
 //            contentChild.setFitsSystemWindows(true);
@@ -88,10 +89,14 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 1){
-                    ((DigestImageFragment)mAdapter.getItem(1)).reloadData();
-                } else {
-                    ((ImportNewsFragment)mAdapter.getItem(0)).reloadData();
+                Fragment page = mAdapter.getItem(position);
+                switch (position){
+                    case MainViewPagerAdapter.IMPORTNEWS_INDEX:
+                        ((ImportNewsFragment)page).reloadData();
+                        break;
+                    case MainViewPagerAdapter.DIGESTIMAGE_INDEX:
+                        ((DigestImageFragment)page).reloadData();
+                        break;
                 }
             }
 
@@ -101,7 +106,7 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
         });
         mTabLayout = (TabLayout)findViewById(R.id.tablayout_importnews);
         mTabLayout.setupWithViewPager(mViewPager);
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_format_list_bulleted_white_24dp, null);
+        Drawable drawable = Utils.getDrawable(this, R.drawable.ic_format_list_bulleted_white_24dp);
         mToolbar.setNavigationIcon(drawable);
         mToolbar.setDoubleClickListener(new DoubleClickToolbar.DoubleClickListener() {
             @Override
@@ -112,6 +117,13 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        ((ImportNewsFragment)mAdapter.getItem(MainViewPagerAdapter.IMPORTNEWS_INDEX)).reloadData();
     }
 
     private void setupStatusBarView(ViewGroup contentLayout, int color) {

@@ -2,10 +2,10 @@ package com.tongji.wangjimin.tongjinews.net.util;
 
 /**
  * Created by wangjimin on 17/2/28.
- * Utils.
+ * NetUtils.
  */
 
-public class Utils {
+public class NetUtils {
     public static String parseImageUrl(String tag){
         int startIndex = tag.indexOf("http");
         int endIndex = tag.lastIndexOf("jpg");

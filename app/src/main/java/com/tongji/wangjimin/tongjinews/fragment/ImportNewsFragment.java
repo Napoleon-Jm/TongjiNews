@@ -177,7 +177,8 @@ public class ImportNewsFragment extends Fragment {
     }
 
     public void reloadData(){
-        mAdapter.notifyDataSetChanged();
+        if(mAdapter != null)
+            mAdapter.notifyDataSetChanged();
     }
 
     @Override

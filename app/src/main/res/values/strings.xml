@@ -7,4 +7,7 @@
     <string name="des">des</string>
     <string name="header">header</string>
     <string name="back">back</string>
+    <string name="read_num">Read: %1$s</string>
+    <string name="collect_msg">News is collected.</string>
+    <string name="remove_fav_msg">News is removed from favorites.</string>
 </resources>

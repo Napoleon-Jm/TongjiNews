@@ -25,7 +25,8 @@ import com.tongji.wangjimin.tongjinews.data.NewsReaderContract;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
 import com.tongji.wangjimin.tongjinews.net.News;
 import com.tongji.wangjimin.tongjinews.net.NewsContent;
-import com.tongji.wangjimin.tongjinews.net.util.Utils;
+import com.tongji.wangjimin.tongjinews.net.util.NetUtils;
+import com.tongji.wangjimin.tongjinews.utils.Utils;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
@@ -95,7 +96,7 @@ public class NewsContentActivity extends AppCompatActivity {
             @Override
             public void onClick(int position) {
                 List<String> data = new ArrayList<String>();
-                String url = Utils.parseImageUrl(mAdapter.getItemData(position));
+                String url = NetUtils.parseImageUrl(mAdapter.getItemData(position));
                 data.add(url);
                 NewsContentImageAdapter adapter = new NewsContentImageAdapter(data, NewsContentActivity.this, mViewPager);
                 mViewPager.setVisibility(View.VISIBLE);
@@ -112,14 +113,16 @@ public class NewsContentActivity extends AppCompatActivity {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 if(!dbHelper.isExist(db, NewsReaderContract.NewsEntry.TABLE_FAV_NAME,
                         mNewsInfo, NewsReaderDbHelper.MODE_INSERT)){
-                    mFavorites.setImageDrawable(ResourcesCompat.getDrawable(NewsContentActivity.this.getResources(),
-                            R.drawable.ic_favorite_white_24dp, null));
-                    Toast.makeText(NewsContentActivity.this, "Has been collected.", Toast.LENGTH_SHORT).show();
+                    mFavorites.setImageDrawable(Utils
+                            .getDrawable(NewsContentActivity.this, R.drawable.ic_favorite_white_24dp));
+                    Toast.makeText(NewsContentActivity.this, R.string.collect_msg, Toast.LENGTH_SHORT)
+                            .show();
                 } else {
                     dbHelper.deleteNews(db, NewsReaderContract.NewsEntry.TABLE_FAV_NAME, mNewsInfo);
-                    mFavorites.setImageDrawable(ResourcesCompat.getDrawable(NewsContentActivity.this.getResources(),
-                            R.drawable.ic_favorite_border_white_24dp, null));
-                    Toast.makeText(NewsContentActivity.this, "Has been remove.", Toast.LENGTH_SHORT).show();
+                    mFavorites.setImageDrawable(Utils.getDrawable(NewsContentActivity.this,
+                            R.drawable.ic_favorite_border_white_24dp));
+                    Toast.makeText(NewsContentActivity.this, R.string.remove_fav_msg, Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
@@ -128,10 +131,8 @@ public class NewsContentActivity extends AppCompatActivity {
         mNewsInfo = intent.getParcelableExtra("newsinfo");
         NewsReaderDbHelper dbHelper = NewsReaderDbHelper
                 .getInstance(NewsContentActivity.this);
-        if(dbHelper.isExist(dbHelper.getWritableDatabase(), NewsReaderContract.NewsEntry.TABLE_FAV_NAME,
-                mNewsInfo, 0)){
-            mFavorites.setImageDrawable(ResourcesCompat.getDrawable(NewsContentActivity.this.getResources(),
-                    R.drawable.ic_favorite_white_24dp, null));
+        if(dbHelper.isCollected(mNewsInfo)){
+            mFavorites.setImageDrawable(Utils.getDrawable(this, R.drawable.ic_favorite_white_24dp));
         }
         mCollapsLayout.setTitle(mNewsInfo.getTitle());
         /*

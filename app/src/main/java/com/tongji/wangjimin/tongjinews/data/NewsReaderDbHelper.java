@@ -146,4 +146,9 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
         }
         return new News(title, date, readNum, url, images);
     }
+
+    public boolean isCollected(News news){
+        SQLiteDatabase db = getWritableDatabase();
+        return isExist(db, TABLE_FAV_NAME, news, MODE_NO_OP);
+    }
 }

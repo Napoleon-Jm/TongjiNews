@@ -15,6 +15,8 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     private String[] mTitles = {"News", "Images"};
     private Fragment[] fragments = {new ImportNewsFragment(), new DigestImageFragment()};
+    public static final int IMPORTNEWS_INDEX = 0;
+    public static final int DIGESTIMAGE_INDEX = 1;
 
     public MainViewPagerAdapter(FragmentManager fm) {
         super(fm);
