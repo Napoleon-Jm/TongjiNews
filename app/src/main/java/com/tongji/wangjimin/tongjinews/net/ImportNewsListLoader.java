@@ -120,7 +120,9 @@ public class ImportNewsListLoader {
         List<News> newsList = new ArrayList<>();
         CountDownLatch cdl = new CountDownLatch(loadNum);
         for(int i = 0;i < loadNum;i++){
-            mPool.execute(new LoadNewsTask(mLoadedUrls.pop(), newsList, cdl));
+            // 需要先判断是否为空，防止后续 Jsoup 出错。
+            if(mLoadedUrls.size() > 0)
+                mPool.execute(new LoadNewsTask(mLoadedUrls.pop(), newsList, cdl));
         }
         mPool.execute(new LoadDoneTask(cdl, new Runnable() {
             @Override
