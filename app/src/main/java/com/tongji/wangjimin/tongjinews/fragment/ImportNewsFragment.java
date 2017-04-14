@@ -35,7 +35,14 @@ public class ImportNewsFragment extends Fragment {
     /**
      * NoLeak Handler
      */
+
     private static class ReceiveHandler extends Handler {
+
+        private static final int MSG_DATABASE_CACHE = 0;
+        private static final int MSG_NETWORK_DATALOADED = 1;
+        private static final int MSG_NETWORK_PULL_TO_REFRESH = 2;
+        private static final int MSG_NETWORK_GET_MORE = 3;
+
         private final WeakReference<ImportNewsFragment> fragment;
         ReceiveHandler(ImportNewsFragment fragment){
             this.fragment = new WeakReference<>(fragment);
@@ -45,16 +52,20 @@ public class ImportNewsFragment extends Fragment {
             super.handleMessage(msg);
             ImportNewsFragment actualFragment = fragment.get();
             if(actualFragment != null){
-                if(msg.what == 0){
-                    actualFragment.mAdapter.setDataAndNotify(NewsApplication.getInstance().getNewsList());
-                    actualFragment.mSwipeLayout.setRefreshing(false);
-                }
-                else if(msg.what == 1){
-                    actualFragment.mAdapter.addAll(actualFragment.mNewsList);
-                    //不需要删除列表中最后一项的加载页面，因为 Notify 信息源变更后，信息会自动更新，加载页面会自动更新到新的最后的位置。
-//                    actualFragment.mAdapter.removeData(msg.what);
-                } else {
-                    actualFragment.mSwipeLayout.setRefreshing(false);
+                switch (msg.what){
+                    case MSG_DATABASE_CACHE:
+                        actualFragment.mAdapter.setDataAndNotify(NewsApplication.getInstance().getNewsList());
+                        break;
+                    case MSG_NETWORK_DATALOADED:
+                        actualFragment.mAdapter.setDataAndNotify(NewsApplication.getInstance().getNewsList());
+                        actualFragment.mSwipeLayout.setRefreshing(false);
+                        break;
+                    case MSG_NETWORK_GET_MORE:
+                        actualFragment.mAdapter.addAll(actualFragment.mNewsList);
+                        break;
+                    case MSG_NETWORK_PULL_TO_REFRESH:
+                        actualFragment.mSwipeLayout.setRefreshing(false);
+                        break;
                 }
             }
         }
@@ -87,7 +98,7 @@ public class ImportNewsFragment extends Fragment {
                     @Override
                     public void run() {
                         mNewsListLoader.loadRefresh(null);
-                        mHandler.sendEmptyMessage(2);
+                        mHandler.sendEmptyMessage(ReceiveHandler.MSG_NETWORK_PULL_TO_REFRESH);
                     }
                 }).start();
             }
@@ -111,7 +122,7 @@ public class ImportNewsFragment extends Fragment {
                             @Override
                             public void loadDone(List<News> newsList) {
                                 mNewsList = newsList;
-                                mHandler.sendEmptyMessage(1);
+                                mHandler.sendEmptyMessage(ReceiveHandler.MSG_NETWORK_GET_MORE);
                                 mRecyclerView.setLoadingDone();
                             }
                         }, false);
@@ -167,10 +178,10 @@ public class ImportNewsFragment extends Fragment {
                     @Override
                     public void loadDone(List<News> newsList) {
                         NewsApplication.getInstance().setNewsList(newsList);
-                        actFragment.mHandler.sendEmptyMessage(0);
+                        actFragment.mHandler.sendEmptyMessage(ReceiveHandler.MSG_NETWORK_DATALOADED);
                     }
                 }));
-                actFragment.mHandler.sendEmptyMessage(0);
+                actFragment.mHandler.sendEmptyMessage(ReceiveHandler.MSG_DATABASE_CACHE);
             }
             return null;
         }
