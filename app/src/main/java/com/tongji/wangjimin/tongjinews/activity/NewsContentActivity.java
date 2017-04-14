@@ -1,11 +1,10 @@
-package com.tongji.wangjimin.tongjinews;
+package com.tongji.wangjimin.tongjinews.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentAdapter;
 import com.tongji.wangjimin.tongjinews.adapter.NewsContentImageAdapter;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderContract;

@@ -1,4 +1,4 @@
-package com.tongji.wangjimin.tongjinews;
+package com.tongji.wangjimin.tongjinews.fragment;
 
 import android.support.v4.app.Fragment;
 

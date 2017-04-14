@@ -1,4 +1,4 @@
-package com.tongji.wangjimin.tongjinews;
+package com.tongji.wangjimin.tongjinews.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

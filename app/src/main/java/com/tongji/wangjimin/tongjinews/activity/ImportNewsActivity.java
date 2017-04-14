@@ -1,4 +1,4 @@
-package com.tongji.wangjimin.tongjinews;
+package com.tongji.wangjimin.tongjinews.activity;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -21,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.MainViewPagerAdapter;
 import com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment;
 import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
