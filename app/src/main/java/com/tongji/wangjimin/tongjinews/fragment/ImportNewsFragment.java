@@ -71,7 +71,7 @@ public class ImportNewsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNewsListLoader = ImportNewsLoaderWithCache.getInstance(getContext());
-        mAdapter = new ImportNewsAdapter(getContext());
+        mAdapter = new ImportNewsAdapter(getContext(), true);
     }
 
     @Nullable

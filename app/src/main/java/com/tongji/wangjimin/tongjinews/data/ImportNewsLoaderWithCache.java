@@ -41,13 +41,13 @@ public class ImportNewsLoaderWithCache {
 
     public List<News> loadWithCache(ILoadingWithCacheDone callback){
         loadWithNet(callback, true);
-        return loadWithDb();
+        return loadWithDb(TABLE_NAME);
     }
 
-    private List<News> loadWithDb(){
+    public List<News> loadWithDb(String tableName){
         //
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor c =  db.query(TABLE_NAME, null, null, null, null, null, COLUMN_NAME_DATE + " DESC", null);
+        Cursor c =  db.query(tableName, null, null, null, null, null, COLUMN_NAME_DATE + " DESC", null);
         if(c.getCount() < 1)
             return null;
         List<News> newsList = new ArrayList<>();

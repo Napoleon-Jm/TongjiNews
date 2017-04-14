@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    app:layout_scrollFlags="scroll|enterAlways"
+    android:background="@color/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

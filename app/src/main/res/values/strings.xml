@@ -10,4 +10,5 @@
     <string name="read_num">Read: %1$s</string>
     <string name="collect_msg">News is collected.</string>
     <string name="remove_fav_msg">News is removed from favorites.</string>
+    <string name="favorites_news_list">Favorites news list.</string>
 </resources>

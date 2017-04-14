@@ -7,18 +7,21 @@
     <application
         android:name=".NewsApplication"
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="false"><!-- Android M 引入的自动备份属性，可以上传到 Google Drive -->
+        android:theme="@style/AppTheme"> <!-- Android M 引入的自动备份属性，可以上传到 Google Drive -->
         <activity
             android:name=".activity.NewsContentActivity"
-            android:theme="@style/NoActionBar" >
+            android:theme="@style/NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="jm" android:host="tongji" android:path="/news"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="tongji"
+                    android:path="/news"
+                    android:scheme="jm" />
             </intent-filter>
         </activity>
         <activity
@@ -27,16 +30,20 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".test.TestActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <!-- <activity android:name=".test.TestActivity"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <activity android:name=".activity.FavoritesActivity"
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

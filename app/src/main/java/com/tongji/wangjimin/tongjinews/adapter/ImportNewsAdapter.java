@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderContract;
 import com.tongji.wangjimin.tongjinews.data.NewsReaderDbHelper;
 import com.tongji.wangjimin.tongjinews.net.News;
-import com.tongji.wangjimin.tongjinews.net.NewsContent;
 import com.tongji.wangjimin.tongjinews.utils.Utils;
 
 import java.util.List;
@@ -57,6 +55,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             fav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    boolean isCollect = false;
                     News news = mData.get(getAdapterPosition());
                     int drawableId = R.drawable.ic_favorite_border_black_24dp;
                     NewsReaderDbHelper dbHelper = NewsReaderDbHelper.getInstance(mContext);
@@ -65,9 +64,13 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             NewsReaderDbHelper.MODE_INSERT)){
                         drawableId = R.drawable.ic_favorite_black_24dp;
                         Toast.makeText(mContext, R.string.collect_msg, Toast.LENGTH_SHORT).show();
+                        isCollect = true;
                     } else {
                         dbHelper.deleteNews(db, NewsReaderContract.NewsEntry.TABLE_FAV_NAME, news);
                         Toast.makeText(mContext, R.string.remove_fav_msg, Toast.LENGTH_SHORT).show();
+                    }
+                    if(mFavListener != null){
+                        mFavListener.onClick(isCollect, getAdapterPosition());
                     }
                     fav.setImageDrawable(Utils.getDrawable(mContext, drawableId));
                 }
@@ -86,10 +89,17 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context mContext;
     private List<News> mData;
     private ClickListener mListener;
+    private FavoritesClickListener mFavListener;
+    private boolean mIsRefresh = false;
 
     public ImportNewsAdapter(Context context){
+        this(context, false);
+    }
+
+    public ImportNewsAdapter(Context context, boolean isRefresh){
         mContext = context;
         mData = NewsApplication.getInstance().getNewsList();
+        mIsRefresh = isRefresh;
     }
 
     @Override
@@ -139,17 +149,28 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        //3 is on screen to show.
-        if(mData.size() < 3)
+        if(mData == null){
+            return 0;
+        }
+        if(mIsRefresh){
+            //3 is on screen to show.
+            if(mData.size() < 3)
+                return mData.size();
+            return mData.size() + 1;
+        } else {
             return mData.size();
-        return mData.size() + 1;
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position == mData.size())
-            return TYPE_FOOTER;
-        return TYPE_NORMAL;
+        if(mIsRefresh){
+            if(position == mData.size())
+                return TYPE_FOOTER;
+            return TYPE_NORMAL;
+        } else {
+            return TYPE_NORMAL;
+        }
     }
 
     public void setDataAndNotify(List<News> data){
@@ -177,11 +198,24 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRemoved(position);
     }
 
+    public void clearAdapterOwnData(){
+        mData = null;
+        notifyDataSetChanged();
+    }
+
     public void setOnItemClickListener(ClickListener listener){
         mListener = listener;
     }
 
     public interface ClickListener{
         void onClick(int position);
+    }
+
+    public void setOnItemFavoritesClickListener(FavoritesClickListener listener){
+        mFavListener = listener;
+    }
+
+    public interface FavoritesClickListener{
+        void onClick(boolean isCollect, int pos);
     }
 }

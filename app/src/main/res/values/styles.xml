@@ -21,10 +21,6 @@
         <!--<item name="android:textColorPrimary">@android:color/white</item>-->
     </style>
 
-    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-    </style>
-
     <style name="CollapsingApp">
         <!--<item name="android:textSize">20sp</item>-->
         <item name="android:textColor">@android:color/white</item>
@@ -33,6 +29,4 @@
     <style name="ExpendApp" parent="CollapsingApp">
         <item name="android:textSize">22sp</item>
     </style>
-
-
 </resources>

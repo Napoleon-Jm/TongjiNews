@@ -1,6 +1,7 @@
 package com.tongji.wangjimin.tongjinews.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -65,6 +66,8 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.item_fav:
+                        Intent intent = new Intent(ImportNewsActivity.this, FavoritesActivity.class);
+                        startActivity(intent);
                     case R.id.item_msg:
                     case R.id.item_friend:
                         showMsg("To do, please wait, 3Q.", Toast.LENGTH_SHORT);
@@ -163,6 +166,7 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
         switch (item.getItemId()){
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
