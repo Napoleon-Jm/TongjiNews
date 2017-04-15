@@ -1,6 +1,8 @@
 package com.tongji.wangjimin.tongjinews.net;
 import android.util.Log;
 
+import com.tongji.wangjimin.tongjinews.log.LogMsg;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -17,7 +19,7 @@ class Documenter {
         } catch (IOException e) {
             e.printStackTrace();
             // 方便定位 Exception。
-            Log.w("TJ_ERROR", e.getMessage());
+            Log.w(LogMsg.ERROR_TAG, e.getMessage());
         }
         return null;
     }

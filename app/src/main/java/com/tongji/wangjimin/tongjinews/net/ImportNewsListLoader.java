@@ -3,6 +3,7 @@ package com.tongji.wangjimin.tongjinews.net;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
+import com.tongji.wangjimin.tongjinews.log.LogMsg;
 import com.tongji.wangjimin.tongjinews.net.util.Config;
 
 import org.jsoup.nodes.Document;
@@ -93,7 +94,7 @@ public class ImportNewsListLoader {
 
     private List<String> loadUrl(String pageUrl){
         String url = pageUrl;
-        Log.d("wjm", url);
+        Log.d(LogMsg.LOG_TAG, url);
         Document doc = Documenter.loadDoc(url);
         if (doc != null) {
             Elements newsLists = doc.select(".news_list");
