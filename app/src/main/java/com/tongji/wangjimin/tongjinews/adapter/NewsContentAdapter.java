@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by wangjimin on 17/2/25.
  * NewsContentAdapter, for
- * {@link com.tongji.wangjimin.tongjinews.NewsContentActivity}.
+ * {@link com.tongji.wangjimin.tongjinews.activity.NewsContentActivity}.
  */
 
 public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -28,6 +28,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int TYPE_IMAGE = 1;
 
     /**
+     * Text ViewHolder.
      * Outer class could access inner class private member.
      */
     private class TextViewHolder extends RecyclerView.ViewHolder{
@@ -69,12 +70,14 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View root;
         switch (viewType){
             case TYPE_IMAGE:
-                root = LayoutInflater.from(mContext).inflate(R.layout.newscontent_recyclerview_item_image,
-                    parent, false);
+                root = LayoutInflater
+                        .from(mContext)
+                        .inflate(R.layout.newscontent_recyclerview_item_image, parent, false);
                 return new ImageViewHolder(root);
             case TYPE_TEXT:
-                root = LayoutInflater.from(mContext).inflate(R.layout.newscontent_recyclerview_item_text,
-                        parent, false);
+                root = LayoutInflater
+                        .from(mContext)
+                        .inflate(R.layout.newscontent_recyclerview_item_text, parent, false);
                 return new TextViewHolder(root);
         }
         return null;
@@ -84,7 +87,6 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (holder.getItemViewType()){
             case TYPE_IMAGE:{
-                //test
                 int startIndex = mData.get(position).indexOf("http");
                 int endIndex = mData.get(position).lastIndexOf("jpg");
                 if(endIndex == -1){
@@ -106,6 +108,7 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     result = Html.fromHtml(mData.get(position),Html.FROM_HTML_MODE_LEGACY);
                 } else {
+                    //noinspection deprecation
                     result = Html.fromHtml(mData.get(position));
                 }
                 ((TextViewHolder)holder).textView.setText(result);
@@ -133,7 +136,6 @@ public class NewsContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-//        return super.getItemViewType(position);
         return mData.get(position).contains("src")? TYPE_IMAGE: TYPE_TEXT;
     }
 

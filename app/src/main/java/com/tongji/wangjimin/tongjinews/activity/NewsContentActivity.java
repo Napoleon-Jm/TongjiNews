@@ -69,10 +69,12 @@ public class NewsContentActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             // 此处是全部透明
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.setFlags(
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             // 有阴影，半透明
-//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+            // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
@@ -83,7 +85,8 @@ public class NewsContentActivity extends AppCompatActivity {
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview_newcontent);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mViewPager = (ViewPager)findViewById(R.id.newscontent_viewpager);
         mViewPager.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +101,8 @@ public class NewsContentActivity extends AppCompatActivity {
                 List<String> data = new ArrayList<String>();
                 String url = NetUtils.parseImageUrl(mAdapter.getItemData(position));
                 data.add(url);
-                NewsContentImageAdapter adapter = new NewsContentImageAdapter(data, NewsContentActivity.this, mViewPager);
+                NewsContentImageAdapter adapter =
+                        new NewsContentImageAdapter(data, NewsContentActivity.this, mViewPager);
                 mViewPager.setVisibility(View.VISIBLE);
                 mViewPager.setAdapter(adapter);
             }
@@ -121,7 +125,8 @@ public class NewsContentActivity extends AppCompatActivity {
                     dbHelper.deleteNews(db, NewsReaderContract.NewsEntry.TABLE_FAV_NAME, mNewsInfo);
                     mFavorites.setImageDrawable(Utils.getDrawable(NewsContentActivity.this,
                             R.drawable.ic_favorite_border_white_24dp));
-                    Toast.makeText(NewsContentActivity.this, R.string.remove_fav_msg, Toast.LENGTH_SHORT)
+                    Toast.makeText(NewsContentActivity.this
+                            , R.string.remove_fav_msg, Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -149,7 +154,7 @@ public class NewsContentActivity extends AppCompatActivity {
                 mNewsContent = new NewsContent(mNewsInfo, new Runnable() {
                     @Override
                     public void run() {
-
+                        // no work to do.
                     }
                 });
                 mHandler.sendEmptyMessage(0);

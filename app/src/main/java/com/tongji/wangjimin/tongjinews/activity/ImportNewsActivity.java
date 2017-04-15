@@ -9,7 +9,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -71,10 +70,10 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                         break;
                     case R.id.item_msg:
                     case R.id.item_friend:
-                        showMsg("To do, please wait, 3Q.", Toast.LENGTH_SHORT);
+                        showMsg(getString(R.string.todo_str), Toast.LENGTH_SHORT);
                         break;
                     case R.id.item_about:
-                        showMsg("WangJimin 7 years in Tongji University.", Toast.LENGTH_LONG);
+                        showMsg(getString(R.string.about_str), Toast.LENGTH_LONG);
                         break;
                 }
                 return false;
@@ -127,8 +126,9 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
     @Override
     protected void onStart() {
         super.onStart();
-//        boolean hasNetWork = Utils.isNetworkConnected(this);
-//        Toast.makeText(this, "NetWork: " + hasNetWork, Toast.LENGTH_SHORT).show();
+        // TODO: 17/4/15 NetWork check.
+        // boolean hasNetWork = Utils.isNetworkConnected(this);
+        // Toast.makeText(this, "NetWork: " + hasNetWork, Toast.LENGTH_SHORT).show();
         ((ImportNewsFragment)mAdapter.getItem(MainViewPagerAdapter.IMPORTNEWS_INDEX)).reloadData();
     }
 
@@ -175,11 +175,12 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
 
     @Override
     public void onBackPressed() {
-        if(mViewPager.getCurrentItem() == 1){
+        if(mViewPager.getCurrentItem() == MainViewPagerAdapter.DIGESTIMAGE_INDEX){
             if(mIsFlipOn){
-                ((DigestImageFragment)mAdapter.getItem(1)).whenFlipOnBack();
+                ((DigestImageFragment)mAdapter
+                        .getItem(MainViewPagerAdapter.DIGESTIMAGE_INDEX)).whenFlipOnBack();
             } else {
-                mViewPager.setCurrentItem(0);
+                mViewPager.setCurrentItem(MainViewPagerAdapter.IMPORTNEWS_INDEX);
             }
             return;
         }

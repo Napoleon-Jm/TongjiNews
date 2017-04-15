@@ -9,6 +9,9 @@ import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 
 /**
  * Created by wangjimin on 17/2/28.
+ * MainViewPagerAdapter, for
+ * {@link com.tongji.wangjimin.tongjinews.activity.ImportNewsActivity}'s
+ * mViewPager.
  */
 
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
@@ -29,7 +32,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return fragments.length;
     }
 
     @Override

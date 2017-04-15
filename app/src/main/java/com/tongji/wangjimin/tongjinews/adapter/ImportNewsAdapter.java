@@ -1,5 +1,6 @@
 package com.tongji.wangjimin.tongjinews.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
@@ -24,14 +25,18 @@ import java.util.List;
 
 /**
  * Created by wangjimin on 17/2/24.
- * ImportNewsAdapter.
+ * ImportNewsAdapter, for
+ * {@link com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment}'s
+ * mRecyclerView.
  */
 
 public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
+    private static final int ONE_SCREEN_NEWS_NUM = 3;
 
+    /* Import news view holder. */
     private class ViewHolder extends RecyclerView.ViewHolder{
         private TextView title;
         private TextView date;
@@ -78,6 +83,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    /* Load more indicator view holder. */
     private class FootHolder extends RecyclerView.ViewHolder{
         private ProgressBar progressBar;
         private FootHolder(View itemView) {
@@ -129,7 +135,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 h.readNum.setText(mContext.getString(R.string.read_num, data.getReadNum()));
                 List<String> images = data.getImages();
                 if(images == null || images.size() < 1){
-//                    h.image.setBackgroundResource(R.color.green);
+                    //noinspection deprecation
                     h.image.setImageResource(R.color.green);
                     return;
                 }
@@ -154,7 +160,7 @@ public class ImportNewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
         if(mIsRefresh){
             //3 is on screen to show.
-            if(mData.size() < 3)
+            if(mData.size() < ONE_SCREEN_NEWS_NUM)
                 return mData.size();
             return mData.size() + 1;
         } else {

@@ -14,9 +14,23 @@ import java.util.List;
 
 /**
  * Created by wangjimin on 17/3/29.
+ * FlipAdapter, for
+ * {@link com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment}'s
+ * mFlipRecyclerView.
  */
 
 public class FlipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    /* Flip image view holder. */
+    private class FlipViewHolder extends RecyclerView.ViewHolder{
+
+        private SimpleDraweeView image;
+
+        private FlipViewHolder(View itemView) {
+            super(itemView);
+            image = (SimpleDraweeView)itemView.findViewById(R.id.flip_image);
+        }
+    }
 
     private List<String> mImages;
     private Context mContext;
@@ -43,15 +57,6 @@ public class FlipAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mImages.size();
     }
 
-    private class FlipViewHolder extends RecyclerView.ViewHolder{
-
-        private SimpleDraweeView image;
-
-        private FlipViewHolder(View itemView) {
-            super(itemView);
-            image = (SimpleDraweeView)itemView.findViewById(R.id.flip_image);
-        }
-    }
 
     public void setData(List<String> data){
         mImages = data;

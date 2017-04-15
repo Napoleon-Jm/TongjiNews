@@ -15,10 +15,14 @@ import java.util.List;
 
 /**
  * Created by wangjimin on 17/3/17.
+ * DigestImageAdapter, for
+ * {@link com.tongji.wangjimin.tongjinews.fragment.DigestImageFragment}'s
+ * mRecyclerView.
  */
 
 public class DigestImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    /* Image view holder. */
     private class ImageViewHolder extends RecyclerView.ViewHolder{
         private SimpleDraweeView image;
         private ImageViewHolder(View itemView) {

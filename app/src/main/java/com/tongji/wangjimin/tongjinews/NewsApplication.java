@@ -11,13 +11,16 @@ import java.util.List;
 
 /**
  * Created by wangjimin on 17/2/28.
+ * NewsApplication, Singleton.
  */
 
 public class NewsApplication extends Application {
 
+    /* Global news list */
     private List<News> mNewsList;
-    private static NewsApplication instance;
+    /* Global news images */
     private List<List<String> > mImageList;
+    private static NewsApplication instance;
 
     public static NewsApplication getInstance(){
         return instance;
@@ -29,6 +32,7 @@ public class NewsApplication extends Application {
         instance = this;
         mNewsList = new ArrayList<>();
         mImageList = new ArrayList<>();
+        /* Fresco initialize. */
         Fresco.initialize(this);
     }
 
@@ -37,6 +41,7 @@ public class NewsApplication extends Application {
         return mNewsList;
     }
 
+    @Nullable
     public List<List<String> > getImageList(){ return mImageList; }
 
     public void setNewsList(List<News> newsList){

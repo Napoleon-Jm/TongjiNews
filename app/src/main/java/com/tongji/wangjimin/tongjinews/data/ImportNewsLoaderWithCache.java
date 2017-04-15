@@ -16,16 +16,18 @@ import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.
  * Created by wangjimin on 17/3/8.
  * ImportNewsLoaderWithCache.
  *
- * 1. Data sources, include
- * database and network.
+ * 1. Data sources, include database and network.
  * 2. Two level cache.
  * 3. Supported by Jsoup.
  *
  */
 
 public class ImportNewsLoaderWithCache {
+    /* Jsoup loader. */
     private static ImportNewsListLoader mNetLoader;
+    /* Sqlite database helper. */
     private static NewsReaderDbHelper mDbHelper;
+    /* Singleton, which is not thread-safe. */
     private static ImportNewsLoaderWithCache instance;
 
     private ImportNewsLoaderWithCache(Context context){
@@ -39,13 +41,15 @@ public class ImportNewsLoaderWithCache {
         return instance;
     }
 
+    /* Load next few news with cache. */
     public List<News> loadWithCache(ILoadingWithCacheDone callback){
+        /* Load from net. */
         loadWithNet(callback, true);
+        /* Load from sqlite database. */
         return loadWithDb(TABLE_NAME);
     }
 
     public List<News> loadWithDb(String tableName){
-        //
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor c =  db.query(tableName, null, null, null, null, null, COLUMN_NAME_DATE + " DESC", null);
         if(c.getCount() < 1)
@@ -64,7 +68,7 @@ public class ImportNewsLoaderWithCache {
             @Override
             public void loadingDone(List<News> newsList) {
                 callback.loadDone(newsList);
-                //todo db insert.
+                /* When first network load return, update cache */
                 if(cache){
                     SQLiteDatabase db = mDbHelper.getWritableDatabase();
                     db.delete(TABLE_NAME, null, null);
@@ -77,6 +81,7 @@ public class ImportNewsLoaderWithCache {
         });
     }
 
+    /* Load latest news. */
     public void loadRefresh(ILoadingWithCacheDone callback){
         mNetLoader.loadRefresh(new ImportNewsListLoader.ILoadingDone() {
             @Override
@@ -90,13 +95,12 @@ public class ImportNewsLoaderWithCache {
 
     public void clearCache(){
         // Other way, delete db every time when fresh news come.
-//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//        db.execSQL("delete from entry where id not in (select top 5 id from entry order by id");
-//        Log.d("wjm", "delete cache.");
+        // SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        // db.execSQL("delete from entry where id not in (select top 5 id from entry order by id");
+        // Log.d("wjm", "delete cache.");
     }
 
     public interface ILoadingWithCacheDone{
         void loadDone(List<News> newsList);
     }
-
 }

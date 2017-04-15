@@ -17,7 +17,9 @@ import java.util.List;
 
 /**
  * Created by wangjimin on 17/2/28.
- * Big image adapter.
+ * NewsContentImageAdapter, for
+ * {@link com.tongji.wangjimin.tongjinews.activity.NewsContentActivity}'smViewPager,
+ * Responsible for show Image in NewsContentActivity.
  */
 
 public class NewsContentImageAdapter extends PagerAdapter{

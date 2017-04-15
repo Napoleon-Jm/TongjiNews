@@ -25,13 +25,13 @@ import static com.tongji.wangjimin.tongjinews.data.NewsReaderContract.NewsEntry.
 
 /**
  * Created by wangjimin on 17/3/7.
- *
  * DbHelper, could be optimized by ORM framework.
  */
 
 public class NewsReaderDbHelper extends SQLiteOpenHelper {
-
+    /* Database name */
     private static final String DATABASE_NAME = "News.db";
+    /* Version code */
     private static int DATABASE_VERSION = 1;
     /* Note the blank space between sql world. */
     private static final String TABLE_PARAMS = " (" +
@@ -41,22 +41,35 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
             NewsReaderContract.NewsEntry.COLUMN_NAME_READNUM + " TEXT," +
             NewsReaderContract.NewsEntry.COLUMN_NAME_URL + " TEXT," +
             NewsReaderContract.NewsEntry.COLUMN_NAME_IMAGES + " TEXT)";
-
+    /* Create cache table */
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + NewsReaderContract.NewsEntry.TABLE_NAME + TABLE_PARAMS;
+    /* Create favorites table */
     private static final String SQL_CREATE_FAV_ENTRIES =
             "CREATE TABLE " + NewsReaderContract.NewsEntry.TABLE_FAV_NAME + TABLE_PARAMS;
-
+    /* Delete cache table */
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsReaderContract.NewsEntry.TABLE_NAME;
+    /* Delete favorites table */
     private static final String SQL_DELETE_FAV_ENTRIES =
             "DROP TABLE IF EXISTS " + NewsReaderContract.NewsEntry.TABLE_FAV_NAME;
 
+    /*
+    Mode {@see fun isExit}
+    MODE_NO_OP: No other work to do.
+    MODE_INSERT: If data is not exist, then insert data.
+    MODE_DELETE: If data is exist, then delete data.
+     */
     public static final int MODE_NO_OP = 0;
     public static final int MODE_INSERT = 1;
     public static final int MODE_DELETE = 2;
 
+    /* Singleton */
     private static NewsReaderDbHelper instance;
+
+    private NewsReaderDbHelper(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
     public static NewsReaderDbHelper getInstance(Context context){
         if(instance == null){
@@ -65,16 +78,13 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    private NewsReaderDbHelper(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_FAV_ENTRIES);
     }
 
+    /* When database upgrade, delete origin database, and create a new one. */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
@@ -106,7 +116,7 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
      * Insert data if its not exist, when isInsert is true.
      * @param db database to operation.
      * @param news data to operation.
-     * @param mode next operation when exist.
+     * @param mode operation when data is exist or not.
      * @return if data is exist.
      */
     public boolean isExist(SQLiteDatabase db ,String tableName ,News news, int mode){
@@ -124,6 +134,7 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
         return exist;
     }
 
+    /* Construct News from cursor */
     public News cursorToNews(Cursor c){
         List<String> images = null;
         int index = c.getColumnIndex(COLUMN_NAME_TITLE);
@@ -147,6 +158,7 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
         return new News(title, date, readNum, url, images);
     }
 
+    /* Just return if data is exist in favorites table */
     public boolean isCollected(News news){
         SQLiteDatabase db = getWritableDatabase();
         return isExist(db, TABLE_FAV_NAME, news, MODE_NO_OP);
