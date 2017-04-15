@@ -83,9 +83,10 @@ public class ImportNewsListLoader {
     @WorkerThread
     private void loadNewsUrl(Runnable urlCallback){
         List<String> urls = loadUrl(Config.getImportNewsUrl());
-        if(urls != null)
+        if(urls != null){
             mLoadedUrls.addAll(urls);
-        mLeftUrls = mLoadedUrls.size();
+            mLeftUrls += urls.size();
+        }
         if(urlCallback != null)
             urlCallback.run();
     }
@@ -136,7 +137,7 @@ public class ImportNewsListLoader {
         mPool.execute(new LoadDoneTask(cdl, new Runnable() {
             @Override
             public void run() {
-                mLeftUrls = mLoadedUrls.size();
+                mLeftUrls -= loadNum;
                 Collections.sort(newsList);
                 callback.loadingDone(newsList);
             }
