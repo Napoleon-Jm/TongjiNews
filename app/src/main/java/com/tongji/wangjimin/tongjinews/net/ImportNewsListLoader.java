@@ -44,7 +44,6 @@ public class ImportNewsListLoader {
     private LinkedList<String> mLoadedUrls;
     /* unused news page urls size. */
     private int mLeftUrls;
-    private List<News> mLoadedNewsList;
     /* Load news size once {#load} called. */
     private int mLoadBlockSize;
     /* Thread pool */
@@ -56,7 +55,6 @@ public class ImportNewsListLoader {
 
     private ImportNewsListLoader(){
         mLoadedUrls = new LinkedList<>();
-        mLoadedNewsList = new ArrayList<>();
         mLeftUrls = 0;
         mLoadBlockSize = 7;
         mPool = Executors.newFixedThreadPool(4);

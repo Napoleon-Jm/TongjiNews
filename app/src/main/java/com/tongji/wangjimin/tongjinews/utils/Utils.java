@@ -8,9 +8,11 @@ import android.support.v4.content.res.ResourcesCompat;
 
 /**
  * Created by wangjimin on 17/4/14.
+ * Utils class.
  */
 
 public class Utils {
+    // context.getDrawable is api21.
     public static Drawable getDrawable(Context context, int id){
         return ResourcesCompat.getDrawable(context.getResources(), id, null);
     }

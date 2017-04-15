@@ -15,28 +15,34 @@ import java.util.List;
 
 /**
  * Created by wangjimin on 17/2/24.
- * News
+ * News.
  */
 public class News implements Parcelable, Comparable<News>{
+    private static final String NEWS_CONTENT_PAGE_TILE_CLASS_SELECTOR = ".news_title";
+    private static final String NEWS_CONTENT_PAGE_NEWSINFO_CALSS_SELECTOR = ".news_info";
+    private static final String NEWS_CONTENT_PAGE_NEWSCONTENT_CLASS_SELECTOR = ".news_content";
+
+    private static final String NEWSCONTENT_IMAGE_TAG_NAME = "img";
+    private static final String NEWSCONTENT_IMAGE_URL_ATTRIBUTE_NAME = "src";
+
     private String mTitle;
     private String mDate;
     private String mReadNum;
     private final String mUrl;
     private final List<String> mImages;
 
-    @TargetApi(24)
     @WorkerThread
     News(String url){
-        mUrl = Config.HOST +  url;
+        mUrl = Config.HOST + url;
         Document doc = Documenter.loadDoc(mUrl);
         Element title = null;
         Element dateAndNum = null;
         Element content = null;
         mImages =new ArrayList<>();
         if(doc != null){
-            title = doc.select(".news_title").first();
-            dateAndNum = doc.select(".news_info").first();
-            content = doc.select(".news_content").first();
+            title = doc.select(NEWS_CONTENT_PAGE_TILE_CLASS_SELECTOR).first();
+            dateAndNum = doc.select(NEWS_CONTENT_PAGE_NEWSINFO_CALSS_SELECTOR).first();
+            content = doc.select(NEWS_CONTENT_PAGE_NEWSCONTENT_CLASS_SELECTOR).first();
         }
         if(title != null){
             mTitle = title.text();
@@ -52,9 +58,9 @@ public class News implements Parcelable, Comparable<News>{
         if(content != null){
             //collect. @TargetApi(24);
             // 此时的 Android Studio 还不支持 Java8 的 steam 特性。
-//            mImages.addAll(content.select("img").stream().map(e -> e.attr("src")).collect(Collectors.toList()));
-            for(Element img:content.select("img")){
-                mImages.add(img.attr("src"));
+            // mImages.addAll(content.select("img").stream().map(e -> e.attr("src")).collect(Collectors.toList()));
+            for(Element img:content.select(NEWSCONTENT_IMAGE_TAG_NAME)){
+                mImages.add(img.attr(NEWSCONTENT_IMAGE_URL_ATTRIBUTE_NAME));
             }
         }
     }
@@ -130,9 +136,10 @@ public class News implements Parcelable, Comparable<News>{
         dest.writeStringList(mImages);
     }
 
+    /* Date is bigger, position is nearer. */
     @Override
     public int compareTo(@NonNull News o) {
-        if(o == null || o.getDate() == null || this.getDate() == null)
+        if(o.getDate() == null || this.getDate() == null)
             return 1;
         return o.getDate().compareTo(this.getDate());
     }

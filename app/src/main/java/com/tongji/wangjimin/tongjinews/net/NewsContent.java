@@ -19,6 +19,7 @@ import java.util.List;
 public class NewsContent {
     /* could be initialized in constructor. */
     private News mNewsInfo;
+    /* News content list, text and image. */
     private List<String> mContent;
 
     @WorkerThread
@@ -40,6 +41,9 @@ public class NewsContent {
     private void parseContentFromUrl(String url){
         mContent = new ArrayList<>();
         Document doc = Documenter.loadDoc(mNewsInfo.getUrl());
+        if(doc == null){
+            return;
+        }
         Elements es = doc.select(".news_content");
         if(es != null){
             Element contents = es.first();
