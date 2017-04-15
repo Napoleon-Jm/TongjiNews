@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,11 +165,21 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 break;
+            case R.id.search_bar:
+                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

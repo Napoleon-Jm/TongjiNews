@@ -3,7 +3,7 @@
     package="com.tongji.wangjimin.tongjinews">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".NewsApplication"
@@ -31,7 +31,6 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,6 +43,9 @@
         <!-- </intent-filter> -->
         <!-- </activity> -->
         <activity android:name=".activity.FavoritesActivity"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".activity.SearchActivity"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/NoActionBar"/>
     </application>
 
