@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  * Created by wangjimin on 17/2/24.
- * Get Document.
+ * Get Document object.
  */
 class Documenter {
     static Document loadDoc(String url) {

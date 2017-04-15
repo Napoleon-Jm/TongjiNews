@@ -18,11 +18,8 @@ import java.util.concurrent.Executors;
 /**
  * Created by wangjimin on 17/2/24.
  * ImportNews.
- *
  * News Loader v1.0 is deprecated
- *
- * see {@link ImportNewsListLoader}
- *
+ * see {@link ImportNewsListLoader}.
  */
 class ImportNews {
     private List<News> mNewsList;

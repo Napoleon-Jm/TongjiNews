@@ -20,24 +20,33 @@ import java.util.concurrent.Executors;
 /**
  * Created by wangjimin on 17/2/27.
  * ImportNewsLoader.
- * New news loader.
+ * Import news loader v2.0.
  */
 
 public class ImportNewsListLoader {
 
     /**
-     * Callback for @{#load}.
+     * Callback for {#load}.
      */
     public interface ILoadingDone{
         void loadingDone(List<News> newsList);
     }
 
+    /**
+     * News page urls, which is loaded by Jsoup.
+     * All the urls can be used to parse to {@link News} object.
+     */
     private LinkedList<String> mLoadedUrls;
+    /* unused news page urls size. */
     private int mLeftUrls;
     private List<News> mLoadedNewsList;
+    /* Load news size once {#load} called. */
     private int mLoadBlockSize;
+    /* Thread pool */
     private ExecutorService mPool;
+    /** Thread lock used by {@link LoadNewsTask}. */
     private static final Object lock = new Object();
+    /* Singleton. */
     private static ImportNewsListLoader instance;
 
     private ImportNewsListLoader(){
