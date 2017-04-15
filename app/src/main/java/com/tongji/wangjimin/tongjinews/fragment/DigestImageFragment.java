@@ -37,6 +37,9 @@ public class DigestImageFragment extends Fragment {
 
     /* No leak memory */
     private static class RecvHandler extends Handler {
+        private static final int MSG_NO_OP = 0;
+        private static final int MSG_NETWORK_LOAD_MORE_DONE = 1;
+        private static final int MSG_NETWORK_PULL_TO_REFRESH = 2;
         private WeakReference<DigestImageFragment> wRef;
 
         private RecvHandler(DigestImageFragment fragment) {
@@ -48,11 +51,11 @@ public class DigestImageFragment extends Fragment {
             super.handleMessage(msg);
             DigestImageFragment actFragment = wRef.get();
             switch (msg.what) {
-                case 0:
+                case MSG_NO_OP:
                     break;
-                case 1:
+                case MSG_NETWORK_LOAD_MORE_DONE:
                     actFragment.mAdapter.addAll(actFragment.mNewsList);
-                case 2:
+                case MSG_NETWORK_PULL_TO_REFRESH:
                     if (actFragment != null) {
                         actFragment.mSwipeLayout.setRefreshing(false);
                     }
@@ -60,26 +63,34 @@ public class DigestImageFragment extends Fragment {
         }
     }
 
+    /* Responsible for pull down refresh, and first loading animation. */
     private SwipeRefreshLayout mSwipeLayout;
+    /* Image list. */
     private RefreshRecyclerView mRecyclerView;
+    /* Show big image, which can flip to next one. */
     private FlipRecyclerView mFlipRecyclerView;
-    private FlipAdapter mFlipAdapter;
     private RecvHandler mHandler;
+    /* Reference for pull up loaded data. */
     private List<News> mNewsList;
+    /* Data source, responsible for load data. */
     private ImportNewsLoaderWithCache mDataLoader;
     private boolean isFirstVisibile;
+    /* Container for flip view. */
     private FrameLayout mFlipLayout;
+    /* Back indicator. */
     private ImageView mBack;
+    /* Image index text view. */
     private TextView mImageIndex;
+    private FlipAdapter mFlipAdapter;
     private DigestImageAdapter mAdapter;
-    private FlipOnListener mFlipOnListener;
+    private FlipShowListener mFlipShowListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataLoader = ImportNewsLoaderWithCache.getInstance(getContext());
         mHandler = new RecvHandler(this);
-        mFlipOnListener = (FlipOnListener) getActivity();
+        mFlipShowListener = (FlipShowListener) getActivity();
     }
 
     @Nullable
@@ -90,7 +101,7 @@ public class DigestImageFragment extends Fragment {
         mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefresh_digestimage);
         mSwipeLayout.setOnRefreshListener(() -> new Thread(() -> {
             mDataLoader.loadRefresh(null);
-            mHandler.sendEmptyMessage(2);
+            mHandler.sendEmptyMessage(RecvHandler.MSG_NETWORK_PULL_TO_REFRESH);
         }).start());
         mFlipLayout = (FrameLayout) root.findViewById(R.id.fliplayout);
         mBack = (ImageView) root.findViewById(R.id.back_image);
@@ -111,8 +122,8 @@ public class DigestImageFragment extends Fragment {
             mFlipAdapter.setData(mAdapter.getDataSet().get(pos));
             mImageIndex.setText(MessageFormat.format("1/{0}", mFlipAdapter.getItemCount()));
             ((ImportNewsActivity) getActivity()).collapseToolbar();
-            if (mFlipOnListener != null) {
-                mFlipOnListener.flipOn(true);
+            if (mFlipShowListener != null) {
+                mFlipShowListener.flipShow(true);
             }
         });
         mBack.setOnClickListener(v -> {
@@ -129,7 +140,7 @@ public class DigestImageFragment extends Fragment {
                         @Override
                         public void loadDone(List<News> newsList) {
                             mNewsList = newsList;
-                            mHandler.sendEmptyMessage(1);
+                            mHandler.sendEmptyMessage(RecvHandler.MSG_NETWORK_LOAD_MORE_DONE);
                             mRecyclerView.setLoadingDone();
                         }
                     }, false);
@@ -159,14 +170,17 @@ public class DigestImageFragment extends Fragment {
     public void whenFlipOnBack() {
         // TODO, 只有当 FlipRecyclerView 滑动回第一个时，ViewPager 才正常反应，
         // 当 View.GONE 时，即使 reload ViewPager 也不正常作用，原因有待纠察。
-        mFlipRecyclerView.reload();
+        mFlipRecyclerView.reload();/* Reset flip view to position 0. */
         mFlipLayout.setVisibility(View.INVISIBLE);
-        if (mFlipOnListener != null) {
-            mFlipOnListener.flipOn(false);
+        if (mFlipShowListener != null) {
+            mFlipShowListener.flipShow(false);
         }
     }
 
-    public interface FlipOnListener{
-        void flipOn(boolean f);
+    /**
+     * Notify the listener, when the flip view's visibility changed.
+     */
+    public interface FlipShowListener {
+        void flipShow(boolean f);
     }
 }

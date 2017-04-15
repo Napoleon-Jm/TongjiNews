@@ -33,11 +33,9 @@ import java.util.List;
 
 public class ImportNewsFragment extends Fragment {
     /**
-     * NoLeak Handler
+     * No memory leak Handler.
      */
-
     private static class ReceiveHandler extends Handler {
-
         private static final int MSG_DATABASE_CACHE = 0;
         private static final int MSG_NETWORK_DATALOADED = 1;
         private static final int MSG_NETWORK_PULL_TO_REFRESH = 2;
@@ -47,6 +45,7 @@ public class ImportNewsFragment extends Fragment {
         ReceiveHandler(ImportNewsFragment fragment){
             this.fragment = new WeakReference<>(fragment);
         }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -70,14 +69,21 @@ public class ImportNewsFragment extends Fragment {
             }
         }
     }
+    /* Responsible fo notify main thread, then work thread return. */
     private final ReceiveHandler mHandler = new ReceiveHandler(this);
+    /* Important news list. */
     private RefreshRecyclerView mRecyclerView;
+    /* Responsible for pull to refresh, and first data loading animation. */
     private SwipeRefreshLayout mSwipeLayout;
+    /* Data source */
     private ImportNewsLoaderWithCache mNewsListLoader;
     private ImportNewsAdapter mAdapter;
+    /* Reference for data returned by data loader. */
     private List<News> mNewsList;
     private boolean isFirstVisible = true;
+    /* Database helper. */
     private NewsReaderDbHelper mDbHelper;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +113,7 @@ public class ImportNewsFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         mAdapter.setOnItemClickListener(position -> {
             Intent intent = new Intent(getActivity(), NewsContentActivity.class);
-            //Activity 之间传递对象.
+            // Send clicked item news to NewsContentActivity.
             intent.putExtra("newsinfo", mAdapter.getNews(position));
             startActivity(intent);
         });
@@ -115,6 +121,7 @@ public class ImportNewsFragment extends Fragment {
         mRecyclerView.setRefreshWork(new RefreshRecyclerView.Refresher() {
             @Override
             public void refresh() {
+                // Load next few data from Jsoup.
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

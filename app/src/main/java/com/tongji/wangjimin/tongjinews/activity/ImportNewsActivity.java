@@ -28,7 +28,7 @@ import com.tongji.wangjimin.tongjinews.fragment.ImportNewsFragment;
 import com.tongji.wangjimin.tongjinews.utils.Utils;
 import com.tongji.wangjimin.tongjinews.view.DoubleClickToolbar;
 
-public class ImportNewsActivity extends AppCompatActivity implements DigestImageFragment.FlipOnListener{
+public class ImportNewsActivity extends AppCompatActivity implements DigestImageFragment.FlipShowListener {
 
     private AppBarLayout mAppBarLayout;
     private DoubleClickToolbar mToolbar;
@@ -188,7 +188,7 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
     }
 
     @Override
-    public void flipOn(boolean f) {
+    public void flipShow(boolean f) {
         mIsFlipOn = f;
     }
 }
