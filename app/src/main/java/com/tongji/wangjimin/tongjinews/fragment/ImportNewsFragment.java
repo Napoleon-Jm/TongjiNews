@@ -97,6 +97,7 @@ public class ImportNewsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_importnews, container, false);
         mRecyclerView = (RefreshRecyclerView) root.findViewById(R.id.recyclerview_main);
         mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefresh_main);
+        mSwipeLayout.setColorSchemeResources(R.color.colorAccent);
         mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

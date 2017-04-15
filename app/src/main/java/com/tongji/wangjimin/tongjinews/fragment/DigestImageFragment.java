@@ -99,6 +99,7 @@ public class DigestImageFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_digestimage, container, false);
         mSwipeLayout = (SwipeRefreshLayout) root.findViewById(R.id.swiperefresh_digestimage);
+        mSwipeLayout.setColorSchemeResources(R.color.colorAccent);
         mSwipeLayout.setOnRefreshListener(() -> new Thread(() -> {
             mDataLoader.loadRefresh(null);
             mHandler.sendEmptyMessage(RecvHandler.MSG_NETWORK_PULL_TO_REFRESH);
