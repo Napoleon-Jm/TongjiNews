@@ -33,6 +33,10 @@ public class ImportNewsListLoader {
         void loadingDone(List<News> newsList);
     }
 
+    private static final String IMPORTNEWS_URL_LIST_CLASS_SELECTOR = ".news_list";
+    private static final int IMPORTNEWS_URL_LIST_CLASS_INDEX_IN_HTML = 2;
+    private static final String IMPORTNEWS_URL_ATTRIBUTE_NAME = "href";
+
     /**
      * News page urls, which is loaded by Jsoup.
      * All the urls can be used to parse to {@link News} object.
@@ -97,15 +101,14 @@ public class ImportNewsListLoader {
         Log.d(LogMsg.LOG_TAG, url);
         Document doc = Documenter.loadDoc(url);
         if (doc != null) {
-            Elements newsLists = doc.select(".news_list");
-            Element newsList = null;
-            newsList = newsLists.get(2);
+            Elements newsLists = doc.select(IMPORTNEWS_URL_LIST_CLASS_SELECTOR);
+            Element newsList = newsLists.get(IMPORTNEWS_URL_LIST_CLASS_INDEX_IN_HTML);
             if (newsList != null) {
                 List<String> urls = new ArrayList<>();
                 Element ul = newsList.child(0);
                 for (Element li : ul.children()) {
                     Element a = li.child(0);
-                    urls.add(a.attr("href"));
+                    urls.add(a.attr(IMPORTNEWS_URL_ATTRIBUTE_NAME));
                 }
                 return urls;
             }
