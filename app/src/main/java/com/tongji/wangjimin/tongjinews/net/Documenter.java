@@ -12,8 +12,8 @@ import java.io.IOException;
  * Created by wangjimin on 17/2/24.
  * Get Document object.
  */
-class Documenter {
-    static Document loadDoc(String url) {
+public class Documenter {
+    public static Document loadDoc(String url) {
         try {
             return Jsoup.connect(url).get();
         } catch (IOException e) {
