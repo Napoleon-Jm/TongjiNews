@@ -11,6 +11,6 @@
     <color name="tabTextColor">#b5ebeb</color>
     <!-- setNavigationBarColor 不支持透明处理 -->
     <color name="bottom_bav">#00000000</color>
-    
     <color name="image_front_hint">#66cccccc</color>
+    <color name="search_title">#219EE7</color>
 </resources>

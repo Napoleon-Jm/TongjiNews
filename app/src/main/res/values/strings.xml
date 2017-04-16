@@ -15,4 +15,6 @@
     <string name="about_str">WangJimin 7 years in Tongji University.</string>
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
+    <string name="content">content</string>
+    <string name="title">Title</string>
 </resources>

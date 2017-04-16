@@ -34,7 +34,8 @@
             android:gravity="center"
             android:hint="@string/cancel"/>
     </LinearLayout>
-    <TextView
+    <com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView
+        android:id="@+id/search_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </com.tongji.wangjimin.tongjinews.view.HideSoftInputLinearLayout>

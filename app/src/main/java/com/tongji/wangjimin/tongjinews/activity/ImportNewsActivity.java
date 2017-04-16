@@ -177,7 +177,6 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                 mDrawer.openDrawer(GravityCompat.START);
                 break;
             case R.id.search_bar:
-                Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
         }

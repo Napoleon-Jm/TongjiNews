@@ -174,6 +174,10 @@ public class NewsContentActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.search_bar:
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
