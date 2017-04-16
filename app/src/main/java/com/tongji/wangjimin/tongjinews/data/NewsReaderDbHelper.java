@@ -32,7 +32,7 @@ public class NewsReaderDbHelper extends SQLiteOpenHelper {
     /* Database name */
     private static final String DATABASE_NAME = "News.db";
     /* Version code */
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 2;
     /* Note the blank space between sql world. */
     private static final String TABLE_PARAMS = " (" +
             NewsReaderContract.NewsEntry._ID + " INTEGER PRIMARY KEY," +

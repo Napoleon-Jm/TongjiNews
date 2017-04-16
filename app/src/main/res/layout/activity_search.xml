@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tongji.wangjimin.tongjinews.view.HideSoftInputLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_search_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,6 +13,7 @@
         android:layout_height="60dp"
         android:background="@color/colorPrimary">
         <EditText
+            android:id="@+id/search_edittext"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginLeft="10dp"
@@ -18,16 +21,20 @@
             android:layout_weight="5.0"
             android:layout_gravity="center_vertical"
             android:background="@android:color/white"
-            android:hint="Search"/>
+            android:inputType="text"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:drawableStart="@drawable/ic_search_black_24dp"
+            android:hint="@string/search"/>
         <TextView
+            android:id="@+id/canel"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1.0"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:hint="Cancel"/>
+            android:hint="@string/cancel"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+</com.tongji.wangjimin.tongjinews.view.HideSoftInputLinearLayout>

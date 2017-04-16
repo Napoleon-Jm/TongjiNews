@@ -13,4 +13,6 @@
     <string name="favorites_news_list">Favorites news list.</string>
     <string name="todo_str">To do, please wait, 3Q.</string>
     <string name="about_str">WangJimin 7 years in Tongji University.</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
 </resources>
