@@ -18,7 +18,9 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data
                     android:host="tongji"
                     android:path="/news"
@@ -31,6 +33,7 @@
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,11 +45,14 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <activity android:name=".activity.FavoritesActivity"
+        <activity
+            android:name=".activity.FavoritesActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".activity.SearchActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.AboutActivity"></activity>
     </application>
 
 </manifest>

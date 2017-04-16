@@ -26,12 +26,14 @@
             android:drawableStart="@drawable/ic_search_black_24dp"
             android:hint="@string/search"/>
         <TextView
-            android:id="@+id/canel"
+            android:id="@+id/cancel"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1.0"
             android:layout_gravity="center_vertical"
             android:gravity="center"
+            android:textColor="@android:color/white"
+            android:text="@string/cancel"
             android:hint="@string/cancel"/>
     </LinearLayout>
     <com.tongji.wangjimin.tongjinews.view.RefreshRecyclerView

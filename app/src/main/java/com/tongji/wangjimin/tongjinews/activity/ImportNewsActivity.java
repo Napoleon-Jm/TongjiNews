@@ -74,6 +74,8 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                         showMsg(getString(R.string.todo_str), Toast.LENGTH_SHORT);
                         break;
                     case R.id.item_about:
+                        Intent aboutIntent = new Intent(ImportNewsActivity.this, AboutActivity.class);
+                        startActivity(aboutIntent);
                         showMsg(getString(R.string.about_str), Toast.LENGTH_LONG);
                         break;
                 }
@@ -179,6 +181,7 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
             case R.id.search_bar:
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

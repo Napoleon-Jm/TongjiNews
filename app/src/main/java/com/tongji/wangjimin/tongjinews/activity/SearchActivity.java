@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tongji.wangjimin.tongjinews.R;
 import com.tongji.wangjimin.tongjinews.adapter.SearchAdapter;
@@ -123,7 +122,7 @@ public class SearchActivity extends AppCompatActivity {
         mRecycler.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        mCanel = (TextView)findViewById(R.id.canel);
+        mCanel = (TextView)findViewById(R.id.cancel);
         mCanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
