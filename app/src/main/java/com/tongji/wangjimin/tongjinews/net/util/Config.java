@@ -26,9 +26,8 @@ public class Config {
     /* In case malformed url error, must add prefix "http://". */
     private static final String SEARCH_URL = "http://sou.tongji.edu.cn/content.php?keyword=";
 
-    public static String getSearchUrl(String... keyWords){
-        String keyWordStr = Arrays.toString(keyWords);
-        keyWordStr = keyWordStr.substring(1, keyWordStr.length()-1);
-        return SEARCH_URL + keyWordStr.replace(',', '+');
+    public static String getSearchUrl(String keyWords){
+        String keyWordStr = keyWords.replace(" ", "+");
+        return SEARCH_URL + keyWordStr;
     }
 }

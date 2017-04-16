@@ -40,7 +40,7 @@ public class NewsSearcher {
      * @return null: parse error.
      */
     @WorkerThread
-    public List<NewsItemDigest> search(String... kewWorks){
+    public List<NewsItemDigest> search(String kewWorks){
         Document doc = Documenter.loadDoc(Config.getSearchUrl(kewWorks));
         Elements eles = doc.select(".list");
         /* Parse failed or no results. */

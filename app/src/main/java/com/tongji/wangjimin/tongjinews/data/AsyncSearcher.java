@@ -24,7 +24,7 @@ public class AsyncSearcher {
         return mInstance;
     }
 
-    public void search(SearchCallback callback, String... keyWords){
+    public void search(SearchCallback callback, String keyWords){
         new Thread(new Runnable() {
             @Override
             public void run() {
