@@ -76,7 +76,6 @@ public class ImportNewsActivity extends AppCompatActivity implements DigestImage
                     case R.id.item_about:
                         Intent aboutIntent = new Intent(ImportNewsActivity.this, AboutActivity.class);
                         startActivity(aboutIntent);
-                        showMsg(getString(R.string.about_str), Toast.LENGTH_LONG);
                         break;
                 }
                 return false;

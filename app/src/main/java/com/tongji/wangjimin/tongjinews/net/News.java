@@ -31,6 +31,8 @@ public class News implements Parcelable, Comparable<News>{
     private final String mUrl;
     private final List<String> mImages;
 
+    public static final String TAG = "newsinfo";
+
     @WorkerThread
     News(String url){
         mUrl = Config.HOST + url;

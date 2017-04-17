@@ -134,7 +134,7 @@ public class NewsContentActivity extends AppCompatActivity {
         });
         //接收 Activity 传递的对象.
         Intent intent = getIntent();
-        mNewsInfo = intent.getParcelableExtra("newsinfo");
+        mNewsInfo = intent.getParcelableExtra(News.TAG);
         NewsReaderDbHelper dbHelper = NewsReaderDbHelper
                 .getInstance(NewsContentActivity.this);
         if(dbHelper.isCollected(mNewsInfo)){

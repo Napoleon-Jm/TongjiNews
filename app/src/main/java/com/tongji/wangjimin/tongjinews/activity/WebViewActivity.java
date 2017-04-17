@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+/**
+ * Useless.
+ */
 public class WebViewActivity extends AppCompatActivity {
 
     @Override

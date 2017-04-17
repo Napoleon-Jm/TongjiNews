@@ -114,7 +114,7 @@ public class SearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(SearchActivity.this, NewsContentActivity.class);
                 NewsItemDigest digest = mAdapter.getData().get(pos);
                 News news = new News(digest.getTitle(), null, null, digest.getUrl(), null);
-                intent.putExtra("newsinfo", news);
+                intent.putExtra(News.TAG, news);
                 startActivity(intent);
             }
         });
