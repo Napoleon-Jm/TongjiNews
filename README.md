@@ -21,7 +21,7 @@ Thanks to [jsoup](https://jsoup.org/), which I used to crawl data from [Tongji o
 ## Demo
 If demo pictures are not loaded completely, you can click it to show.  
 
-  * Important News. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewsimportantnews.gif)  
+  * Important News. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewsimportantnews.gif)  
   
   ![](http://oojczhs59.bkt.clouddn.com/tongjinewsimportantnews.gif)  
   
