@@ -19,24 +19,25 @@ Thanks to [jsoup](https://jsoup.org/), which I used to crawl data from [Tongji o
   4. Quick search news that you are interested in.
   
 ## Demo
-If demo pictures are not loaded completely, you can click it to show.
-  * Important News.  
-  
+If demo pictures are not loaded completely, you can click it to show.  
+
+  * Important News. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewsimportantnews.gif)  
+  
   ![](http://oojczhs59.bkt.clouddn.com/tongjinewsimportantnews.gif)  
   
-  * Image List.  
+  * Image List. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewsimagelist.gif)  
   
   ![](http://oojczhs59.bkt.clouddn.com/tongjinewsimagelist.gif)  
   
-  * News content.  
+  * News content. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewsnewscontent.gif)  
   
   ![](http://oojczhs59.bkt.clouddn.com/tongjinewsnewscontent.gif)  
   
-  * Favorites.  
+  * Favorites. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewsfavorites.gif)  
   
   ![](http://oojczhs59.bkt.clouddn.com/tongjinewsfavorites.gif)  
   
-  * Search.  
+  * Search. [Click to Show Big Gif Image](http://oojczhs59.bkt.clouddn.com/tongjinewssearch.gif)  
   
   ![](http://oojczhs59.bkt.clouddn.com/tongjinewssearch.gif)  
 
